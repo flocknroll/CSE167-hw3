@@ -36,5 +36,15 @@ namespace hw3
                                 -l.X * r.Z + l.Z * r.X,
                                 l.X * r.Y - l.Y * r.X);
         }
+
+        public static double DotProduct(RTVector v1, RTVector v2)
+        {
+            return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
+        }
+
+        public static RTVector operator *(double d, RTVector v)
+        {
+            return new RTVector(d * v.Vector);
+        }
     }
 }

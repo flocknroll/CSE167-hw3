@@ -15,15 +15,16 @@ namespace hw3
         {
             Eye = new RTPoint(lookFrom.Vector);
 
-            W = (lookAt - lookFrom).Normalize();
+            W = (lookFrom - lookAt).Normalize();
             U = RTVector.CrossProduct(up, W).Normalize();
             V = RTVector.CrossProduct(W, U);
 
             Width = width;
             Height = height;
 
-            FovX = width / (double)height;
-            FovY = fovy;
+            
+            FovY = fovy * Math.PI / 180.0d;
+            FovX = (FovY / height) * width;
         }
 
         public RTPoint Eye { get; }
@@ -39,11 +40,13 @@ namespace hw3
 
         public Ray GenerateRay(Point p)
         {
-            double alpha = Math.Tan(FovX / 2.0d) * ((p.Y - (Width / 2)) / (Width / 2));
-            double beta = Math.Tan(FovY / 2.0d) * (((Height / 2) - p.X) / (Height / 2));
+            double alpha = Math.Tan(FovX / 2.0d) * ((p.X - (Width / 2.0d)) / (Width / 2.0d));
+            double beta = Math.Tan(FovY / 2.0d) * (((Height / 2.0d) - p.Y) / (Height / 2.0d));
 
             Vector<double> vec = (alpha * U.Vector + beta * V.Vector - W.Vector);
-            RTVector rayVec = new RTVector(vec.Normalize(1));
+            RTVector rayVec = new RTVector(Eye.Vector + vec.Normalize(1));
+
+            //Console.WriteLine(rayVec.Vector.ToString());
 
             return new Ray(Eye, rayVec, 0, double.MaxValue);
         }

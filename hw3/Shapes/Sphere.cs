@@ -19,7 +19,15 @@ namespace hw3
 
         public bool Intersect(Ray ray)
         {
-            throw new NotImplementedException();
+            RTVector ec = ray.Point - Center;
+
+            double a = RTVector.DotProduct(ray.Vector, ray.Vector);
+            double b = RTVector.DotProduct(2.0d * ray.Vector, ec);
+            double c = RTVector.DotProduct(ec, ec) - Math.Pow(Radius, 2);
+
+            double det = Math.Pow(b, 2) - 4.0d * a * c;
+
+            return det >= 0;
         }
     }
 }

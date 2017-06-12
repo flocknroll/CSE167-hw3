@@ -16,10 +16,10 @@ namespace hw3
             SceneBuilder sb = new SceneBuilder();
             sb.SetSize(640, 480);
             sb.SetOutputPath(@"test.png");
-            sb.SetCamera(new Camera(new RTPoint(0, 0, 0),
+            sb.SetCamera(new Camera(new RTPoint(0, 0, 1.5),
                                     new RTPoint(0, 0, -2),
                                     new RTVector(0, 1, 0),
-                                    1.0, 640, 480));
+                                    90.0, 640, 480));
             sb.SetRayTracer(new RayTracer());
             sb.AddShape(new Sphere(new RTPoint(0, 0, -2), 1));
 

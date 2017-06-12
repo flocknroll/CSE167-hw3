@@ -18,7 +18,7 @@ namespace hw3
 
         public Color Trace(Ray ray)
         {
-            Color res = Color.SaddleBrown;
+            Color res = Color.Black;
 
             foreach (IShape shape in Shapes)
             {
