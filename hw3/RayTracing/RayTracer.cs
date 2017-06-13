@@ -11,21 +11,23 @@ namespace hw3
     {
         public RayTracer()
         {
-            Shapes = new List<IShape>();
+            Primitives = new List<IPrimitive>();
         }
 
-        public IList<IShape> Shapes;
+        public int MaxDepth { get; set; } = 5;
 
-        public Color Trace(Ray ray)
+        public IList<IPrimitive> Primitives;
+
+        public Color Trace(Ray ray, int depth)
         {
             Color res = Color.FromArgb(25, 25, 25);
 
-            foreach (IShape shape in Shapes)
+            foreach (IPrimitive prim in Primitives)
             {
                 LocalGeo geo;
-                if (shape.Intersect(ray, out geo))
+                if (prim.Intersect(ray, out geo))
                 {
-                    res = shape.GetBRDF(geo).KA;
+                    res = prim.GetShading(geo).Ambient;
                 }
             }
 

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace hw3
 {
-    public interface IShape
+    public interface IShading
     {
-        bool Intersect(Ray ray, out LocalGeo geo);
-        BRDF GetBRDF(LocalGeo geo);
+        ShadingInfos GetShading(LocalGeo geo);
     }
 }

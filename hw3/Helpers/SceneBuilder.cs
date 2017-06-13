@@ -60,6 +60,17 @@ namespace hw3
 
             return this;
         }
+
+        public SceneBuilder SetCamera(RTPoint lookFrom, RTPoint lookAt, RTVector up, double fovy)
+        {
+            if (_sampler == null)
+                throw new InvalidOperationException("La taille doit être définie avant la caméra.");
+
+            _camera = new Camera(lookFrom, lookAt, up, fovy, _sampler.Width, _sampler.Height);
+
+            return this;
+        }
+
         public SceneBuilder SetCameraPosition(RTPoint lookFrom, RTPoint lookAt, RTVector up)
         {
             if (_camera == null)
@@ -77,12 +88,32 @@ namespace hw3
             return this;
         }
 
-        public SceneBuilder AddShape(IShape shape)
+        public SceneBuilder AddPrimitive(IPrimitive prim)
         {
             if (_rayTracer == null)
                 _rayTracer = new RayTracer();
 
-            _rayTracer.Shapes.Add(shape);
+            _rayTracer.Primitives.Add(prim);
+
+            return this;
+        }
+
+        public SceneBuilder AddGeoPrimitive(IIntersect shape, Material mat, Transformation trans)
+        {
+            if (_rayTracer == null)
+                _rayTracer = new RayTracer();
+
+            _rayTracer.Primitives.Add(new GeometricPrimitive(shape, mat, trans));
+
+            return this;
+        }
+
+        public SceneBuilder SetMaxDepth(int max)
+        {
+            if (_rayTracer == null)
+                _rayTracer = new RayTracer();
+
+            _rayTracer.MaxDepth = 5;
 
             return this;
         }

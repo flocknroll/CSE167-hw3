@@ -46,27 +46,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ConfigReader.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Output\Film.cs" />
+    <Compile Include="Primitives\GeometricPrimitive.cs" />
+    <Compile Include="Primitives\IBRDF.cs" />
+    <Compile Include="Primitives\IPrimitive.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Output\Sampler.cs" />
     <Compile Include="Output\Scene.cs" />
     <Compile Include="Helpers\SceneBuilder.cs" />
-    <Compile Include="RayTracing\BRDF.cs" />
+    <Compile Include="RayTracing\ShadingInfos.cs" />
     <Compile Include="RayTracing\Camera.cs" />
     <Compile Include="RayTracing\LocalGeo.cs" />
+    <Compile Include="RayTracing\Material.cs" />
     <Compile Include="RayTracing\Normal.cs" />
     <Compile Include="RayTracing\Ray.cs" />
     <Compile Include="RayTracing\RayTracer.cs" />
     <Compile Include="RayTracing\RTPoint.cs" />
     <Compile Include="RayTracing\RTVector.cs" />
-    <Compile Include="Shapes\IShape.cs" />
-    <Compile Include="Shapes\Sphere.cs" />
+    <Compile Include="RayTracing\Transformation.cs" />
+    <Compile Include="Primitives\IIntersect.cs" />
+    <Compile Include="Primitives\Sphere.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Tests\first.test">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Tests\scene4-ambient.test" />
+    <None Include="Tests\scene4-diffuse.test" />
+    <None Include="Tests\scene4-emission.test" />
+    <None Include="Tests\scene4-specular.test" />
+    <None Include="Tests\scene5.test" />
+    <None Include="Tests\scene6.test" />
+    <None Include="Tests\scene7.test" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

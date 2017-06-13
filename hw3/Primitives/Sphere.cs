@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace hw3
 {
-    public class Sphere : IShape
+    public class Sphere : IIntersect
     {
         public Sphere(RTPoint center, double radius)
         {
@@ -17,13 +17,6 @@ namespace hw3
 
         public RTPoint Center { get; }
         public double Radius { get; }
-
-        public Color Ambient { get; set; }
-
-        public BRDF GetBRDF(LocalGeo geo)
-        {
-            return new BRDF { KA = Ambient };
-        }
 
         public bool Intersect(Ray ray, out LocalGeo geo)
         {
