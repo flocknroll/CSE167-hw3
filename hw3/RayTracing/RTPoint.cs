@@ -35,6 +35,11 @@ namespace hw3
         {
             return new RTPoint(p.Vector + v.Vector);
         }
+        public static RTPoint operator +(RTPoint p1, RTPoint p2)
+        {
+            return new RTPoint(p1.Vector + p2.Vector);
+        }
+
 
         public static RTPoint operator -(RTPoint p, RTVector v)
         {

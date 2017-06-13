@@ -48,5 +48,15 @@ namespace hw3
         {
             return new RTVector(d * v.Vector);
         }
+
+        public static RTVector operator +(RTVector v1, RTVector v2)
+        {
+            return new RTVector(v1.Vector + v2.Vector);
+        }
+
+        public static RTVector operator *(RTVector v, double d)
+        {
+            return d * v;
+        }
     }
 }

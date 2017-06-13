@@ -62,10 +62,17 @@ namespace hw3
         {
             return new RTColor(d * c.ARGB);
         }
-
-        public static double operator *(RTColor c1, RTColor c2)
+        public static RTColor operator *(RTColor c, double d)
         {
-            return c1.ARGB * c2.ARGB;
+            return d * c;
+        }
+
+        public static RTColor operator *(RTColor c1, RTColor c2)
+        {
+            return new RTColor(c1.ARGB[0] * c2.ARGB[0],
+                                c1.ARGB[1] * c2.ARGB[1],
+                                c1.ARGB[2] * c2.ARGB[2],
+                                c1.ARGB[3] * c2.ARGB[3]);
         }
     }
 }

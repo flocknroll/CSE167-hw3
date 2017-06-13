@@ -24,9 +24,9 @@ namespace hw3
         private RTColor Shading(LocalGeo geo, ShadingInfos si, Ray ray, RTColor lightCol)
         {
             double nDotL = RTVector.DotProduct(geo.Normal, ray.Vector);
+            RTColor lambert = lightCol * si.Diffuse * (nDotL > 0 ? nDotL : 0.0d);
 
-
-            return si.Ambient;
+            return lambert;
         }
 
         public RTColor Trace(Ray ray, int depth)
