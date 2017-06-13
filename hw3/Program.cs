@@ -11,8 +11,6 @@ namespace hw3
 {
     class Program
     {
-        private static readonly string OUTPUT = @"test.png";
-
         static void Main(string[] args)
         {
             ConfigReader cr = new ConfigReader(args[0]);
@@ -20,9 +18,9 @@ namespace hw3
             using (Scene scene = cr.BuildScene())
             {
                 Console.WriteLine($"Temps : {scene.Render()}ms");
-            } 
-
-            Process.Start(OUTPUT);
+                Process.Start(scene.OutPath);
+            }
+            
             Console.ReadKey();
         }
     }

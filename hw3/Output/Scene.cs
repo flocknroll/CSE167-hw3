@@ -17,14 +17,14 @@ namespace hw3
             _rayTracer = rayTracer;
             _sampler = sampler;
             _film = film;
-            _outPath = outPath;
+            OutPath = outPath;
         }
 
         private Camera _camera;
         private RayTracer _rayTracer;
         private Sampler _sampler;
         private Film _film;
-        private string _outPath;
+        public string OutPath { get; }
 
         public long Render()
         {
@@ -47,7 +47,7 @@ namespace hw3
             }
             sw.Stop();
 
-            _film.WriteToFile(_outPath, ImageFormat.Png);
+            _film.WriteToFile(OutPath, ImageFormat.Png);
             return sw.ElapsedMilliseconds;
         }
 

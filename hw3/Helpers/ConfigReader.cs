@@ -21,13 +21,30 @@ namespace hw3
         private Material _currentMaterial;
         private Transformation _currentTransformation;
 
+        private void InitPrimitiveProperties()
+        {
+            Color? lastAmbient = _currentMaterial?.Properties.Ambient;
+
+            _currentMaterial = new Material();
+            if (lastAmbient.HasValue)
+                _currentMaterial.Properties.Ambient = lastAmbient.Value;
+
+            _currentTransformation = new Transformation(Matrix<double>.Build.DenseIdentity(4));
+        }
+
+        private static Color ColorFromConfig(string[] split)
+        {
+            return Color.FromArgb((int)Math.Floor(double.Parse(split[1]) * 255d),
+                                    (int)Math.Floor(double.Parse(split[2]) * 255d),
+                                    (int)Math.Floor(double.Parse(split[3]) * 255d));
+        }
+
         public Scene BuildScene()
         {
             SceneBuilder sb = new SceneBuilder();
 
             string line;
-            _currentMaterial = new Material();
-            _currentTransformation = new Transformation(Matrix<double>.Build.DenseIdentity(4));
+            InitPrimitiveProperties();
 
             using (FileStream fs = new FileStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read))
             using (StreamReader sr = new StreamReader(fs))
@@ -43,7 +60,7 @@ namespace hw3
 
                     switch (split[0])
                     {
-                            #region General/Camera
+                        #region General/Camera
                         case "size":
                             int width = int.Parse(split[1]);
                             int height = int.Parse(split[2]);
@@ -75,8 +92,36 @@ namespace hw3
                             Sphere s = new Sphere(center, radius);
 
                             sb.AddGeoPrimitive(s, _currentMaterial, _currentTransformation);
-                            _currentMaterial = new Material();
-                            _currentTransformation = new Transformation(Matrix<double>.Build.DenseIdentity(4));
+                            InitPrimitiveProperties();
+                            break;
+
+                        // TODO : triangles
+                        #endregion
+
+                        #region Materials
+                        case "ambient":
+                            Color ambient = ColorFromConfig(split);
+                            _currentMaterial.Properties.Ambient = ambient;
+                            break;
+
+                        case "diffuse":
+                            Color diffuse = ColorFromConfig(split);
+                            _currentMaterial.Properties.Diffuse = diffuse;
+                            break;
+
+                        case "specular":
+                            Color spec = ColorFromConfig(split);
+                            _currentMaterial.Properties.Specular = spec;
+                            break;
+
+                        case "shininess":
+                            double shine = double.Parse(split[1]);
+                            _currentMaterial.Properties.Shininess = shine;
+                            break;
+
+                        case "emission":
+                            Color emission = ColorFromConfig(split);
+                            _currentMaterial.Properties.Emission = emission;
                             break;
                             #endregion
                     }
