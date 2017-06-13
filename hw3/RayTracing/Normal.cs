@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace hw3
 {
-    public class Normal
+    public class Normal : RTVector
     {
-        public Normal(double x, double y, double z)
+        public Normal(double x, double y, double z) : base(x, y, z)
         {
-            Vector = Vector<double>.Build.Dense(new double[] { x, y, z });
+            Vector = Vector.Normalize(1.0d);
         }
 
-        public Vector<double> Vector { get; }
+        public Normal(Vector<double> vec) : base(vec)
+        {
+            Vector = Vector.Normalize(1.0d);
+        }
     }
 }

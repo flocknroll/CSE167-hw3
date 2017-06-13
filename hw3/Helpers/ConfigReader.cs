@@ -23,20 +23,31 @@ namespace hw3
 
         private void InitPrimitiveProperties()
         {
-            Color? lastAmbient = _currentMaterial?.Properties.Ambient;
+            RTColor lastAmbient = _currentMaterial?.Properties.Ambient;
 
             _currentMaterial = new Material();
-            if (lastAmbient.HasValue)
-                _currentMaterial.Properties.Ambient = lastAmbient.Value;
+            if (lastAmbient != null)
+                _currentMaterial.Properties.Ambient = lastAmbient;
 
             _currentTransformation = new Transformation(Matrix<double>.Build.DenseIdentity(4));
         }
 
-        private static Color ColorFromConfig(string[] split)
+        private static RTColor ColorFromConfig(string[] split, int offset = 1)
         {
-            return Color.FromArgb((int)Math.Floor(double.Parse(split[1]) * 255d),
-                                    (int)Math.Floor(double.Parse(split[2]) * 255d),
-                                    (int)Math.Floor(double.Parse(split[3]) * 255d));
+            return new RTColor(1.0d,
+                            double.Parse(split[offset]),
+                            double.Parse(split[offset + 1]),
+                            double.Parse(split[offset + 2]));
+        }
+
+        private static RTVector VectorFromConfig(string[] split, int offset = 1)
+        {
+            return new RTVector(double.Parse(split[offset]), double.Parse(split[offset + 1]), double.Parse(split[offset + 2]));
+        }
+
+        private static RTPoint PointFromConfig(string[] split, int offset = 1)
+        {
+            return new RTPoint(double.Parse(split[offset]), double.Parse(split[offset + 1]), double.Parse(split[offset + 2]));
         }
 
         public Scene BuildScene()
@@ -77,9 +88,9 @@ namespace hw3
                             break;
 
                         case "camera":
-                            RTPoint lFrom = new RTPoint(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3]));
-                            RTPoint lAt = new RTPoint(double.Parse(split[4]), double.Parse(split[5]), double.Parse(split[6]));
-                            RTVector up = new RTVector(double.Parse(split[7]), double.Parse(split[8]), double.Parse(split[9]));
+                            RTPoint lFrom = PointFromConfig(split);
+                            RTPoint lAt = PointFromConfig(split, 4);
+                            RTVector up = VectorFromConfig(split, 7);
                             double fovy = double.Parse(split[10]);
                             sb.SetCamera(lFrom, lAt, up, fovy);
                             break;
@@ -87,7 +98,7 @@ namespace hw3
 
                         #region Geometry
                         case "sphere":
-                            RTPoint center = new RTPoint(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3]));
+                            RTPoint center = PointFromConfig(split);
                             double radius = double.Parse(split[4]);
                             Sphere s = new Sphere(center, radius);
 
@@ -98,19 +109,43 @@ namespace hw3
                         // TODO : triangles
                         #endregion
 
-                        #region Materials
-                        case "ambient":
-                            Color ambient = ColorFromConfig(split);
-                            _currentMaterial.Properties.Ambient = ambient;
+                        #region Lights
+                        case "directional":
+                            RTVector dir = VectorFromConfig(split);
+                            RTColor dirCol = ColorFromConfig(split, 4);
+                            sb.AddLight(new DirLight(dir, dirCol));
                             break;
 
+                        case "point":
+                            RTPoint source = PointFromConfig(split);
+                            RTColor pointCol = ColorFromConfig(split, 4);
+                            sb.AddLight(new PointLight(source, pointCol));
+                            break;
+
+                        case "attenuation":
+                            Attenuation att = new Attenuation
+                            {
+                                Constant = double.Parse(split[1]),
+                                Linear = double.Parse(split[2]),
+                                Quadratic = double.Parse(split[3])
+                            };
+                            sb.SetAttenuation(att);
+                            break;
+
+                        case "ambient":
+                            RTColor ambient = ColorFromConfig(split);
+                            _currentMaterial.Properties.Ambient = ambient;
+                            break;
+                        #endregion
+
+                        #region Materials
                         case "diffuse":
-                            Color diffuse = ColorFromConfig(split);
+                            RTColor diffuse = ColorFromConfig(split);
                             _currentMaterial.Properties.Diffuse = diffuse;
                             break;
 
                         case "specular":
-                            Color spec = ColorFromConfig(split);
+                            RTColor spec = ColorFromConfig(split);
                             _currentMaterial.Properties.Specular = spec;
                             break;
 
@@ -120,7 +155,7 @@ namespace hw3
                             break;
 
                         case "emission":
-                            Color emission = ColorFromConfig(split);
+                            RTColor emission = ColorFromConfig(split);
                             _currentMaterial.Properties.Emission = emission;
                             break;
                             #endregion

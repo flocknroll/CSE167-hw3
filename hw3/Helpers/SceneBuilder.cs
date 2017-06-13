@@ -108,6 +108,26 @@ namespace hw3
             return this;
         }
 
+        public SceneBuilder AddLight(ILight light)
+        {
+            if (_rayTracer == null)
+                _rayTracer = new RayTracer();
+
+            _rayTracer.Lights.Add(light);
+
+            return this;
+        }
+
+        public SceneBuilder SetAttenuation(Attenuation att)
+        {
+            if (_rayTracer == null)
+                _rayTracer = new RayTracer();
+
+            _rayTracer.Attenuation = att;
+
+            return this;
+        }
+
         public SceneBuilder SetMaxDepth(int max)
         {
             if (_rayTracer == null)

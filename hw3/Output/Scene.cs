@@ -42,7 +42,7 @@ namespace hw3
             while (_sampler.MoveNext())
             {
                 Ray ray = _camera.GenerateRay(_sampler.Current);
-                Color color = _rayTracer.Trace(ray, 0);
+                Color color = _rayTracer.Trace(ray, 0).ToColor();
                 _film.Commit(_sampler.Current, color);
             }
             sw.Stop();

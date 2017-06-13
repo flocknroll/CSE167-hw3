@@ -9,11 +9,11 @@ namespace hw3
 {
     public class ShadingInfos
     {
-        public Color Diffuse { get; set; }
-        public Color Specular { get; set; }
-        public Color Emission { get; set; }
-        public Color Ambient { get; set; }
+        public RTColor Diffuse { get; set; } = new RTColor();
+        public RTColor Specular { get; set; } = new RTColor();
+        public RTColor Emission { get; set; } = new RTColor();
+        public RTColor Ambient { get; set; } = new RTColor();
 
-        public double Shininess { get; set; }
+        public double Shininess { get; set; } = 0.0d;
     }
 }

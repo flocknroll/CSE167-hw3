@@ -18,7 +18,8 @@ namespace hw3
         public RTPoint Center { get; }
         public double Radius { get; }
 
-        public bool Intersect(Ray ray, out LocalGeo geo)
+
+        public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo)
         {
             RTVector ec = ray.Point - Center;
 
@@ -57,8 +58,11 @@ namespace hw3
             geo = new LocalGeo();
             if (t >= ray.TMin && t <= ray.TMax)
             {
-                // TODO : calculer le point et la normale
-                
+                if (computeGeo)
+                {
+                    geo.Point = ray.Point + t * ray.Vector;
+                    geo.Normal = new Normal(geo.Point.Vector - Center.Vector);
+                }
 
                 return true;
             }

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace hw3
 {
-    public interface IIntersect
+    public interface ILight
     {
-        bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo);
+        Ray GenerateRay(LocalGeo geo, out RTColor color);
     }
 }

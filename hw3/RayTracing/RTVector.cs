@@ -26,7 +26,7 @@ namespace hw3
             return new RTVector(Vector.Normalize(1.0d));
         }
 
-        public Vector<double> Vector { get; }
+        public Vector<double> Vector { get; protected set; }
 
         public double X => Vector[0];
         public double Y => Vector[1];

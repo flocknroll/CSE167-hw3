@@ -23,9 +23,9 @@ namespace hw3
             return Material.Properties;
         }
 
-        public bool Intersect(Ray ray, out LocalGeo geo)
+        public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo)
         {
-            return Shape.Intersect(ray, out geo);
+            return Shape.Intersect(ray, computeGeo, out geo);
         }
     }
 }

@@ -12,22 +12,46 @@ namespace hw3
         public RayTracer()
         {
             Primitives = new List<IPrimitive>();
+            Lights = new List<ILight>();
         }
 
         public int MaxDepth { get; set; } = 5;
 
-        public IList<IPrimitive> Primitives;
-
-        public Color Trace(Ray ray, int depth)
+        public IList<IPrimitive> Primitives { get; set; }
+        public IList<ILight> Lights { get; set; }
+        public Attenuation Attenuation { get; set; } = new Attenuation();
+        
+        private RTColor Shading(LocalGeo geo, ShadingInfos si, Ray ray, RTColor lightCol)
         {
-            Color res = Color.FromArgb(25, 25, 25);
+            double nDotL = RTVector.DotProduct(geo.Normal, ray.Vector);
+
+
+            return si.Ambient;
+        }
+
+        public RTColor Trace(Ray ray, int depth)
+        {
+            RTColor res = new RTColor();
 
             foreach (IPrimitive prim in Primitives)
             {
                 LocalGeo geo;
-                if (prim.Intersect(ray, out geo))
+                if (prim.Intersect(ray, true, out geo))
                 {
-                    res = prim.GetShading(geo).Ambient;
+                    ShadingInfos si = prim.GetShading(geo);
+
+                    res = si.Emission + si.Ambient;
+
+                    foreach (ILight light in Lights)
+                    {
+                        RTColor lightCol;
+                        Ray lightRay = light.GenerateRay(geo, out lightCol);
+
+                        if (!prim.Intersect(lightRay, false, out _))
+                        {
+                            res += Shading(geo, si, lightRay, lightCol);
+                        }
+                    }
                 }
             }
 

@@ -9,7 +9,7 @@ namespace hw3
 {
     public class Material : IShading
     {
-        private static readonly Color DEFAULT_AMBIENT = Color.FromArgb(51, 51, 51);
+        private static readonly RTColor DEFAULT_AMBIENT = new RTColor(0, 51, 51, 51);
 
         public Material()
         {
