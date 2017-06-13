@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -16,21 +17,32 @@ namespace hw3
         {
             // TODO : read parameters
             SceneBuilder sb = new SceneBuilder();
-            sb.SetSize(640, 480);
+            sb.SetSize(500, 500);
             sb.SetOutputPath(OUTPUT);
-            sb.SetCameraPosition(new RTPoint(0, 0, 1),
+            sb.SetCameraPosition(new RTPoint(0, 0, 5),
                                     new RTPoint(0, 0, 0),
                                     new RTVector(0, 1, 0));
-            sb.AddShape(new Sphere(new RTPoint(0, 0, 0), 0.5d));
+
+            Sphere s1 = new Sphere(new RTPoint(-2, 0, 0), 0.8d);
+            s1.Ambient = Color.Red;
+            Sphere s2 = new Sphere(new RTPoint(0, 0, 0), 0.5d);
+            s2.Ambient = Color.Blue;
+            Sphere s3 = new Sphere(new RTPoint(2, 0, 0), 0.3d);
+            s3.Ambient = Color.Green;
+
+            sb.AddShape(s1)
+                .AddShape(s2)
+                .AddShape(s3);
 
             // TODO : create objects/lights/transformations
 
             using (Scene scene = sb.Build())
             {
-                scene.Render();
-            }
+                Console.WriteLine($"Temps : {scene.Render()}ms");
+            } 
 
-            System.Diagnostics.Process.Start(OUTPUT);
+            Process.Start(OUTPUT);
+            Console.ReadKey();
         }
     }
 }

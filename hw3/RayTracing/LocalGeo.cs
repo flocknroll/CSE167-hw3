@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace hw3
 {
-    public interface IShape
+    public class LocalGeo
     {
-        bool Intersect(Ray ray, out LocalGeo geo);
-        BRDF GetBRDF(LocalGeo geo);
+        public RTPoint Point { get; set; }
+        public Normal Normal { get; set; }
     }
 }

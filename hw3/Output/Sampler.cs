@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace hw3
 {
-    public class Sampler: IEnumerator<Point>
+    public class Sampler: IEnumerator<Point>, IEnumerable<Point>
     {
         private int _current;
         public Sampler(int width, int height)
@@ -41,6 +41,16 @@ namespace hw3
         public void Dispose()
         {
             //
+        }
+
+        public IEnumerator<Point> GetEnumerator()
+        {
+            return this;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this;
         }
     }
 }

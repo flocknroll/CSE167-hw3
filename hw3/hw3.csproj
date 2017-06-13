@@ -53,7 +53,10 @@
     <Compile Include="Output\Sampler.cs" />
     <Compile Include="Output\Scene.cs" />
     <Compile Include="Helpers\SceneBuilder.cs" />
+    <Compile Include="RayTracing\BRDF.cs" />
     <Compile Include="RayTracing\Camera.cs" />
+    <Compile Include="RayTracing\LocalGeo.cs" />
+    <Compile Include="RayTracing\Normal.cs" />
     <Compile Include="RayTracing\Ray.cs" />
     <Compile Include="RayTracing\RayTracer.cs" />
     <Compile Include="RayTracing\RTPoint.cs" />

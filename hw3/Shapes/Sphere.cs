@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,14 @@ namespace hw3
         public RTPoint Center { get; }
         public double Radius { get; }
 
-        public bool Intersect(Ray ray)
+        public Color Ambient { get; set; }
+
+        public BRDF GetBRDF(LocalGeo geo)
+        {
+            return new BRDF { KA = Ambient };
+        }
+
+        public bool Intersect(Ray ray, out LocalGeo geo)
         {
             RTVector ec = ray.Point - Center;
 
@@ -53,7 +61,16 @@ namespace hw3
                 }
             }
 
-            return t >= ray.TMin && t <= ray.TMax;
+            geo = new LocalGeo();
+            if (t >= ray.TMin && t <= ray.TMax)
+            {
+                // TODO : calculer le point et la normale
+                
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

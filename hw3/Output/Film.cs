@@ -11,6 +11,8 @@ namespace hw3
     public class Film: IDisposable
     {
         private Bitmap _film;
+        private object _lock = new object();
+
         public Film(int width, int height)
         {
             Width = width;
@@ -23,12 +25,18 @@ namespace hw3
 
         public void Commit(Point point, Color color)
         {
-            _film.SetPixel(point.X, point.Y, color);
+            lock (_lock)
+            {
+                _film.SetPixel(point.X, point.Y, color); 
+            }
         }
 
         public void WriteToFile(string path, ImageFormat format)
         {
-            _film.Save(path, format);
+            lock (_lock)
+            {
+                _film.Save(path, format); 
+            }
         }
 
         public void Dispose()

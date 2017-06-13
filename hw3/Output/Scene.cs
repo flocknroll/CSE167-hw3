@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace hw3
 {
-    public class Scene: IDisposable
+    public class Scene : IDisposable
     {
         public Scene(Camera camera, RayTracer rayTracer, Sampler sampler, Film film, string outPath)
         {
@@ -25,16 +26,29 @@ namespace hw3
         private Film _film;
         private string _outPath;
 
-        public void Render()
+        public long Render()
         {
             _sampler.Reset();
+            Stopwatch sw = new Stopwatch();
+
+            sw.Start();
+            //Parallel.ForEach<Point>(_sampler, (point, state, i) =>
+            //{
+            //    Ray ray = _camera.GenerateRay(point);
+            //    Color color = _rayTracer.Trace(ray);
+            //    _film.Commit(point, color);
+            //});
+
             while (_sampler.MoveNext())
             {
                 Ray ray = _camera.GenerateRay(_sampler.Current);
                 Color color = _rayTracer.Trace(ray);
                 _film.Commit(_sampler.Current, color);
             }
+            sw.Stop();
+
             _film.WriteToFile(_outPath, ImageFormat.Png);
+            return sw.ElapsedMilliseconds;
         }
 
         public void Dispose()

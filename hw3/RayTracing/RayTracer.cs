@@ -22,9 +22,10 @@ namespace hw3
 
             foreach (IShape shape in Shapes)
             {
-                if (shape.Intersect(ray))
+                LocalGeo geo;
+                if (shape.Intersect(ray, out geo))
                 {
-                    res = Color.Red;
+                    res = shape.GetBRDF(geo).KA;
                 }
             }
 
