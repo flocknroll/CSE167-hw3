@@ -21,12 +21,18 @@ namespace hw3
         public IList<ILight> Lights { get; set; }
         public Attenuation Attenuation { get; set; } = new Attenuation();
         
-        private RTColor Shading(LocalGeo geo, ShadingInfos si, Ray ray, RTColor lightCol)
+        private RTColor Shading(LocalGeo geo, ShadingInfos si, Ray camRay, Ray lightRay, RTColor lightCol)
         {
-            double nDotL = RTVector.DotProduct(geo.Normal, ray.Vector);
+            double nDotL = RTVector.DotProduct(geo.Normal, lightRay.Vector);
             RTColor lambert = lightCol * si.Diffuse * (nDotL > 0 ? nDotL : 0.0d);
 
-            return lambert;
+            RTVector half = (lightRay.Vector - camRay.Vector).Normalize();
+            double nDotH = RTVector.DotProduct(geo.Normal, half);
+            RTColor phong = lightCol * si.Specular * Math.Pow((nDotH > 0 ? nDotH : 0.0d), si.Shininess);
+
+            // TODO : atténuation
+
+            return lambert + phong;
         }
 
         public RTColor Trace(Ray ray, int depth)
@@ -49,7 +55,7 @@ namespace hw3
 
                         if (!prim.Intersect(lightRay, false, out _))
                         {
-                            res += Shading(geo, si, lightRay, lightCol);
+                            res += Shading(geo, si, ray, lightRay, lightCol);
                         }
                     }
                 }
