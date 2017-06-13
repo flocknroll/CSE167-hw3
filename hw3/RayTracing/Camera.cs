@@ -11,26 +11,30 @@ namespace hw3
 {
     public class Camera
     {
-        public Camera(RTPoint lookFrom, RTPoint lookAt, RTVector up, double fovy, int width, int height)
+        public void MoveCamera(RTPoint lookFrom, RTPoint lookAt, RTVector up)
         {
             Eye = new RTPoint(lookFrom.Vector);
 
             W = (lookFrom - lookAt).Normalize();
             U = RTVector.CrossProduct(up, W).Normalize();
             V = RTVector.CrossProduct(W, U);
+        }
+
+        public Camera(RTPoint lookFrom, RTPoint lookAt, RTVector up, double fovy, int width, int height)
+        {
+            MoveCamera(lookFrom, lookAt, up);
 
             Width = width;
             Height = height;
-
             
-            FovY = fovy * Math.PI / 180.0d;
-            FovX = (FovY / height) * width;
+            FovY = fovy.ToRadians();
+            FovX = 2.0d * Math.Atan(Math.Tan(FovY / 2.0d) * (width / (double)height));
         }
 
-        public RTPoint Eye { get; }
-        public RTVector U { get; }
-        public RTVector V { get; }
-        public RTVector W { get; }
+        public RTPoint Eye { get; private set; }
+        public RTVector U { get; private set; }
+        public RTVector V { get; private set; }
+        public RTVector W { get; private set; }
 
         public int Width { get; }
         public int Height { get; }
@@ -44,7 +48,7 @@ namespace hw3
             double beta = Math.Tan(FovY / 2.0d) * (((Height / 2.0d) - p.Y) / (Height / 2.0d));
 
             Vector<double> vec = (alpha * U.Vector + beta * V.Vector - W.Vector);
-            RTVector rayVec = new RTVector(Eye.Vector + vec.Normalize(1));
+            RTVector rayVec = new RTVector(vec.Normalize(1));
 
             //Console.WriteLine(rayVec.Vector.ToString());
 

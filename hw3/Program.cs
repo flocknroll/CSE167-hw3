@@ -10,18 +10,18 @@ namespace hw3
 {
     class Program
     {
+        private static readonly string OUTPUT = @"test.png";
+
         static void Main(string[] args)
         {
             // TODO : read parameters
             SceneBuilder sb = new SceneBuilder();
             sb.SetSize(640, 480);
-            sb.SetOutputPath(@"test.png");
-            sb.SetCamera(new Camera(new RTPoint(0, 0, 1.5),
-                                    new RTPoint(0, 0, -2),
-                                    new RTVector(0, 1, 0),
-                                    90.0, 640, 480));
-            sb.SetRayTracer(new RayTracer());
-            sb.AddShape(new Sphere(new RTPoint(0, 0, -2), 1));
+            sb.SetOutputPath(OUTPUT);
+            sb.SetCameraPosition(new RTPoint(0, 0, 1),
+                                    new RTPoint(0, 0, 0),
+                                    new RTVector(0, 1, 0));
+            sb.AddShape(new Sphere(new RTPoint(0, 0, 0), 0.5d));
 
             // TODO : create objects/lights/transformations
 
@@ -29,6 +29,8 @@ namespace hw3
             {
                 scene.Render();
             }
+
+            System.Diagnostics.Process.Start(OUTPUT);
         }
     }
 }

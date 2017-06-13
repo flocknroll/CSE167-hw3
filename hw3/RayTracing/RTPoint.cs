@@ -18,6 +18,8 @@ namespace hw3
             Vector = vector;
         }
 
+        public static RTPoint Zero => new RTPoint(0, 0, 0);
+
         public Vector<double> Vector { get; }
 
         public double X => Vector[0];

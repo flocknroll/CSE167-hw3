@@ -13,7 +13,8 @@ namespace hw3
         private Sampler _sampler;
         private Film _film;
         private string _outPath;
-        
+
+        #region Set objects
         public SceneBuilder SetRayTracer(RayTracer raytracer)
         {
             _rayTracer = raytracer;
@@ -41,11 +42,29 @@ namespace hw3
 
             return this;
         }
+        #endregion
+
+        #region Config helpers
+        public SceneBuilder InitCameraDefault()
+        {
+            _camera = new Camera(RTPoint.Zero, RTPoint.Zero, RTVector.Zero, 90.0d, _sampler?.Width ?? 400, _sampler?.Height ?? 400);
+
+            return this;
+        }
 
         public SceneBuilder SetSize(int width, int height)
         {
             _sampler = new Sampler(width, height);
             _film = new Film(width, height);
+
+            return this;
+        }
+        public SceneBuilder SetCameraPosition(RTPoint lookFrom, RTPoint lookAt, RTVector up)
+        {
+            if (_camera == null)
+                InitCameraDefault();
+
+            _camera.MoveCamera(lookFrom, lookAt, up);
 
             return this;
         }
@@ -66,10 +85,14 @@ namespace hw3
 
             return this;
         }
+        #endregion
 
         public Scene Build()
         {
-            return new Scene(_camera, _rayTracer,_sampler, _film, _outPath);
+            if (_rayTracer == null)
+                _rayTracer = new RayTracer();
+
+            return new Scene(_camera, _rayTracer, _sampler, _film, _outPath);
         }
     }
 }

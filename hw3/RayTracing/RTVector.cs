@@ -18,10 +18,12 @@ namespace hw3
         {
             Vector = vector;
         }
-        
+
+        public static RTVector Zero => new RTVector(0, 0, 0);
+
         public RTVector Normalize()
         {
-            return new RTVector(Vector.Normalize(2.0d));
+            return new RTVector(Vector.Normalize(1.0d));
         }
 
         public Vector<double> Vector { get; }
