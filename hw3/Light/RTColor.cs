@@ -74,5 +74,10 @@ namespace hw3
                                 c1.ARGB[2] * c2.ARGB[2],
                                 c1.ARGB[3] * c2.ARGB[3]);
         }
+
+        public static RTColor operator /(RTColor c, double d)
+        {
+            return new RTColor(c.ARGB / d);
+        }
     }
 }
