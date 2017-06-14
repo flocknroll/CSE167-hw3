@@ -89,5 +89,10 @@ namespace hw3
         {
             return new RTVector(left.Vector * right.Matrix);
         }
+
+        public static Transformation operator -(Transformation t)
+        {
+            return new Transformation(-t.Matrix);
+        }
     }
 }

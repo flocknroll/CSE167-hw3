@@ -34,8 +34,6 @@ namespace hw3
             _currentMaterial = new Material();
             if (lastAmbient != null)
                 _currentMaterial.Properties.Ambient = lastAmbient;
-
-            _currentTransformation = new Transformation(Matrix<double>.Build.DenseIdentity(4));
         }
 
         private static RTColor ColorFromConfig(string[] split, int offset = 1)

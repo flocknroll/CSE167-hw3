@@ -12,7 +12,6 @@ namespace hw3
     public class Sampler: IEnumerator<Point>, IEnumerable<Point>
     {
         private int _current;
-        private Task _monitor;
 
         public Sampler(int width, int height)
         {

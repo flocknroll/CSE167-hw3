@@ -9,9 +9,9 @@ namespace hw3
 {
     public class RTVector
     {
-        public RTVector(double x, double y, double z)
+        public RTVector(double x, double y, double z, double w = 0)
         {
-            Vector = Vector<double>.Build.Dense(new double[] { x, y, z, 1 });
+            Vector = Vector<double>.Build.Dense(new double[] { x, y, z, w });
         }
 
         public RTVector(Vector<double> vector)
@@ -24,7 +24,7 @@ namespace hw3
             Vector = vector.Vector;
         }
 
-        public static RTVector Zero => new RTVector(0, 0, 0);
+        public static RTVector Zero => new RTVector(0, 0, 0, 0);
 
         public RTVector Normalize()
         {
@@ -41,12 +41,14 @@ namespace hw3
         public double X => Vector[0];
         public double Y => Vector[1];
         public double Z => Vector[2];
+        public double W => Vector[3];
 
         public static RTVector CrossProduct(RTVector l, RTVector r)
         {
             return new RTVector(l.Y * r.Z - l.Z * r.Y,
                                 -l.X * r.Z + l.Z * r.X,
-                                l.X * r.Y - l.Y * r.X);
+                                l.X * r.Y - l.Y * r.X,
+                                0);
         }
 
         public static double DotProduct(RTVector v1, RTVector v2)
@@ -57,6 +59,11 @@ namespace hw3
         public static RTVector operator *(double d, RTVector v)
         {
             return new RTVector(d * v.Vector);
+        }
+
+        public static RTVector operator *(Transformation t, RTVector v)
+        {
+            return new RTVector(t.Matrix * v.Vector);
         }
 
         public static RTVector operator +(RTVector v1, RTVector v2)
@@ -72,6 +79,11 @@ namespace hw3
         public static RTVector operator *(RTVector v, double d)
         {
             return d * v;
+        }
+
+        public static RTVector operator /(RTVector v, double d)
+        {
+            return new RTVector(v.Vector / d);
         }
 
         public static RTVector operator -(RTVector v)
