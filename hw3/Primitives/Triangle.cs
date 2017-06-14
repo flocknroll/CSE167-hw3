@@ -30,7 +30,7 @@ namespace hw3
         public List<Vertex> Vertices { get; }
         public Normal Normal { get; private set; }
 
-        public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo)
+        public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo, out double pos)
         {
             RTPoint A = Vertices[0].Location;
             RTPoint B = Vertices[1].Location;
@@ -39,7 +39,7 @@ namespace hw3
             RTVector u = B - A;
 
             RTVector p0 = new RTVector(ray.Point.Vector);
-            double pos = (RTVector.DotProduct(u, Normal) - RTVector.DotProduct(p0, Normal)) / RTVector.DotProduct(ray.Vector, Normal);
+            pos = (RTVector.DotProduct(u, Normal) - RTVector.DotProduct(p0, Normal)) / RTVector.DotProduct(ray.Vector, Normal);
 
             geo = new LocalGeo();
             if (pos >= ray.TMin && pos <= ray.TMax)

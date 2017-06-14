@@ -49,7 +49,7 @@ namespace hw3
 
             RTVector rayVec = new RTVector(alpha * U.Vector + beta * V.Vector - W.Vector).Normalize();
 
-            return new Ray(Eye, rayVec, 0, double.MaxValue);
+            return new Ray(Eye, rayVec, 0, double.MaxValue, false);
         }
     }
 }

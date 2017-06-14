@@ -21,7 +21,7 @@ namespace hw3
         public Transformation Transformation { get; }
 
 
-        public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo)
+        public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo, out double t)
         {
             RTVector ec = ray.Point - Center;
             RTVector tVec = Transformation * new RTVector(ray.Vector.X, ray.Vector.Y, ray.Vector.Z, 1);
@@ -32,10 +32,12 @@ namespace hw3
             double c = RTVector.DotProduct(ec, ec) - Math.Pow(Radius, 2);
 
             double det = Math.Pow(b, 2) - 4.0d * a * c;
-            double t = -1d;
+            t = double.MaxValue;
 
+            bool intersect = false;
             if (det == 0d)
             {
+                intersect = true;
                 t = -b / (2.0d * a);
             }
             else if (det > 0d)
@@ -45,6 +47,7 @@ namespace hw3
 
                 if ((t1 > 0 && t2 < 0) || (t1 < 0 && t2 > 0))
                 {
+                    intersect = true;
                     if (t1 > 0)
                         t = t1;
                     else
@@ -52,6 +55,7 @@ namespace hw3
                 }
                 else if (t1 > 0 && t2 > 0)
                 {
+                    intersect = true;
                     if (t1 < t2)
                         t = t1;
                     else
@@ -60,7 +64,7 @@ namespace hw3
             }
 
             geo = new LocalGeo();
-            if (t >= ray.TMin && t <= ray.TMax)
+            if (intersect && t >= ray.TMin && t <= ray.TMax)
             {
                 if (computeGeo)
                 {

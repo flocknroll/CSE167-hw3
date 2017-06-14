@@ -8,6 +8,6 @@ namespace hw3
 {
     public interface IIntersect
     {
-        bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo);
+        bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo, out double t);
     }
 }

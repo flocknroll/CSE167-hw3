@@ -22,7 +22,7 @@ namespace hw3
         {
             color = Color;
 
-            return new Ray(Source, Source - geo.Point, 0.1d, double.MaxValue);
+            return new Ray(geo.Point, Source - geo.Point, 0.001d, double.MaxValue, false);
         }
     }
 }

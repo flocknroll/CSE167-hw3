@@ -20,7 +20,7 @@ namespace hw3
         public IList<IPrimitive> Primitives { get; set; }
         public IList<ILight> Lights { get; set; }
         public Attenuation Attenuation { get; set; } = new Attenuation();
-        
+
         private RTColor Shading(LocalGeo geo, ShadingInfos si, Ray camRay, Ray lightRay, RTColor lightCol)
         {
             double nDotL = RTVector.DotProduct(geo.Normal, lightRay.Vector);
@@ -30,7 +30,7 @@ namespace hw3
             double nDotH = RTVector.DotProduct(geo.Normal, half);
             RTColor phong = lightCol * si.Specular * Math.Pow((nDotH > 0 ? nDotH : 0.0d), si.Shininess);
 
-            double r = (geo.Point - lightRay.Point).Vector.L2Norm();
+            double r = lightRay.Directional ? 0 : (geo.Point + lightRay.Vector).Vector.L2Norm();
             RTColor res = (lambert + phong) / (Attenuation.Constant + Attenuation.Linear * r + Attenuation.Quadratic * Math.Pow(r, 2));
 
             return res;
@@ -40,23 +40,36 @@ namespace hw3
         {
             RTColor res = new RTColor();
 
+            double lastT = double.MaxValue;
+            double currT;
+            bool shadow;
             foreach (IPrimitive prim in Primitives)
             {
                 LocalGeo geo;
-                if (prim.Intersect(ray, true, out geo))
+                if (prim.Intersect(ray, true, out geo, out currT))
                 {
-                    ShadingInfos si = prim.GetShading(geo);
-
-                    res = si.Emission + si.Ambient;
-
-                    foreach (ILight light in Lights)
+                    if (currT < lastT)
                     {
-                        RTColor lightCol;
-                        Ray lightRay = light.GenerateRay(geo, out lightCol);
+                        lastT = currT;
 
-                        if (!prim.Intersect(lightRay, false, out _))
+                        ShadingInfos si = prim.GetShading(geo);
+
+                        res = si.Emission + si.Ambient;
+
+                        foreach (ILight light in Lights)
                         {
-                            res += Shading(geo, si, ray, lightRay, lightCol);
+                            shadow = false;
+                            RTColor lightCol;
+                            Ray lightRay = light.GenerateRay(geo, out lightCol);
+
+                            foreach (IPrimitive pShadow in Primitives)
+                            {
+                                if (pShadow.Intersect(lightRay, false, out _, out _))
+                                    shadow = true;
+                            }
+
+                            if (!shadow)
+                                res += Shading(geo, si, ray, lightRay, lightCol);
                         }
                     }
                 }
