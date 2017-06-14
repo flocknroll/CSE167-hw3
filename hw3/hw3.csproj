@@ -52,7 +52,7 @@
     <Compile Include="Light\DirLight.cs" />
     <Compile Include="Light\ILight.cs" />
     <Compile Include="Light\PointLight.cs" />
-    <Compile Include="Light\RTColor.cs" />
+    <Compile Include="RayTracing\RTColor.cs" />
     <Compile Include="Output\Film.cs" />
     <Compile Include="Primitives\GeometricPrimitive.cs" />
     <Compile Include="Primitives\IShading.cs" />

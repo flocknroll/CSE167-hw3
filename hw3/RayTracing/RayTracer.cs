@@ -30,7 +30,7 @@ namespace hw3
             double nDotH = RTVector.DotProduct(geo.Normal, half);
             RTColor phong = lightCol * si.Specular * Math.Pow((nDotH > 0 ? nDotH : 0.0d), si.Shininess);
 
-            double r = (geo.Point - lightRay.Point).Vector.L1Norm();
+            double r = (geo.Point - lightRay.Point).Vector.L2Norm();
             RTColor res = (lambert + phong) / (Attenuation.Constant + Attenuation.Linear * r + Attenuation.Quadratic * Math.Pow(r, 2));
 
             return res;

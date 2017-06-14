@@ -8,19 +8,19 @@ namespace hw3
 {
     public class GeometricPrimitive : IPrimitive
     {
-        public GeometricPrimitive(IIntersect shape, Material mat, Transformation trans)
+        public GeometricPrimitive(IIntersect shape, IShading mat, Transformation trans)
         {
             Shape = shape;
             Material = mat;
             Transformation = trans;
         }
         public IIntersect Shape { get; }
-        public Material Material { get; }
+        public IShading Material { get; }
         public Transformation Transformation { get; }
 
         public ShadingInfos GetShading(LocalGeo geo)
         {
-            return Material.Properties;
+            return Material.GetShading(geo);
         }
 
         public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo)
