@@ -47,10 +47,7 @@ namespace hw3
             double alpha = Math.Tan(FovX / 2.0d) * ((p.X - (Width / 2.0d)) / (Width / 2.0d));
             double beta = Math.Tan(FovY / 2.0d) * (((Height / 2.0d) - p.Y) / (Height / 2.0d));
 
-            Vector<double> vec = (alpha * U.Vector + beta * V.Vector - W.Vector);
-            RTVector rayVec = new RTVector(vec.Normalize(1));
-
-            //Console.WriteLine(rayVec.Vector.ToString());
+            RTVector rayVec = new RTVector(alpha * U.Vector + beta * V.Vector - W.Vector).Normalize();
 
             return new Ray(Eye, rayVec, 0, double.MaxValue);
         }

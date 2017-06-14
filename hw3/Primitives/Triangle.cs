@@ -34,7 +34,6 @@ namespace hw3
                 geo.Point = ray.Point + pos * ray.Vector;
                 geo.Normal = Normal;
 
-                // TODO : vérifier si à l'intérieur du triangle
                 RTVector v = C - A;
                 RTVector w = geo.Point - A;
 

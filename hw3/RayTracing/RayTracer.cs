@@ -26,7 +26,7 @@ namespace hw3
             double nDotL = RTVector.DotProduct(geo.Normal, lightRay.Vector);
             RTColor lambert = lightCol * si.Diffuse * (nDotL > 0 ? nDotL : 0.0d);
 
-            RTVector half = (lightRay.Vector - camRay.Vector).Normalize();
+            RTVector half = (lightRay.Vector.Normalize() - camRay.Vector.Normalize()).Normalize();
             double nDotH = RTVector.DotProduct(geo.Normal, half);
             RTColor phong = lightCol * si.Specular * Math.Pow((nDotH > 0 ? nDotH : 0.0d), si.Shininess);
 

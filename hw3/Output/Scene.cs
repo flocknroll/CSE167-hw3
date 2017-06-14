@@ -32,19 +32,21 @@ namespace hw3
             Stopwatch sw = new Stopwatch();
 
             sw.Start();
+#if DEBUG
+            while (_sampler.MoveNext())
+            {
+                Ray ray = _camera.GenerateRay(_sampler.Current);
+                Color color = _rayTracer.Trace(ray, 0).ToColor();
+                _film.Commit(_sampler.Current, color);
+            }
+#else
             Parallel.ForEach<Point>(_sampler, (point, state, i) =>
             {
                 Ray ray = _camera.GenerateRay(point);
                 Color color = _rayTracer.Trace(ray, 0).ToColor();
                 _film.Commit(point, color);
             });
-
-            //while (_sampler.MoveNext())
-            //{
-            //    Ray ray = _camera.GenerateRay(_sampler.Current);
-            //    Color color = _rayTracer.Trace(ray, 0).ToColor();
-            //    _film.Commit(_sampler.Current, color);
-            //}
+#endif
             sw.Stop();
 
             _film.WriteToFile(OutPath, ImageFormat.Png);

@@ -11,12 +11,17 @@ namespace hw3
     {
         public Normal(double x, double y, double z) : base(x, y, z)
         {
-            Vector = Vector.Normalize(1.0d);
+            Vector = Normalize().Vector;
         }
 
         public Normal(Vector<double> vec) : base(vec)
         {
-            Vector = Vector.Normalize(1.0d);
+            Vector = Normalize().Vector;
+        }
+
+        public Normal(RTVector vec) : base(vec)
+        {
+            Vector = Normalize().Vector;
         }
     }
 }

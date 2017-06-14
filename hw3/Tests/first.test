@@ -2,25 +2,26 @@
 maxdepth 5
 output first.png
 
-camera 0 0 1 0 0 -1 0 1 0 90
+camera 0 0 2 0 0 -1 0 1 0 90
 
-diffuse .7 .1 .7
-specular .7 .7 1
-shininess 20
+ambient 0.1 0 0
+diffuse 0 0.8 0
+shininess 10
+specular 1 1 1
 maxverts 3
 vertex -0.5 -0.5 0
-vertex 0.5 -0.5 0
 vertex 0.5 0.5 0
+vertex 0.5 -0.5 0
 tri 0 1 2
 
-attenuation 1 0.2 0.1
-directional 0 0 -1 0.3 0.8 0.3
-point 0 0 -5 0.3 0.8 0.3
+directional 0.5 -0.5 -1 1 1 1
+#point -2 1 1 1 1 1
 
-diffuse .7 .7 .1
-specular .7 .7 1
+ambient 0 0.1 0
+diffuse 0.9 0 0
 shininess 20
-sphere -1 0 0 0.5
+specular 1 1 1
+sphere -0.5 0.5 -0.5 0.5
 
 #diffuse 1 .7 .7
 #ambient 0 1 0

@@ -19,11 +19,21 @@ namespace hw3
             Vector = vector;
         }
 
+        public RTVector(RTVector vector)
+        {
+            Vector = vector.Vector;
+        }
+
         public static RTVector Zero => new RTVector(0, 0, 0);
 
         public RTVector Normalize()
         {
-            return new RTVector(Vector.Normalize(1.0d));
+            return new RTVector(Vector.Normalize(2.0));
+        }
+
+        public double Length()
+        {
+            return Vector.L2Norm();
         }
 
         public Vector<double> Vector { get; protected set; }
