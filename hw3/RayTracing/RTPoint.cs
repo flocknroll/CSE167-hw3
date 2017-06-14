@@ -11,7 +11,7 @@ namespace hw3
     {
         public RTPoint(double x, double y, double z)
         {
-            Vector = Vector<double>.Build.Dense(new double[] { x, y, z });
+            Vector = Vector<double>.Build.Dense(new double[] { x, y, z, 0 });
         }
         public RTPoint(Vector<double> vector)
         {

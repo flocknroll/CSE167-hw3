@@ -98,12 +98,12 @@ namespace hw3
             return this;
         }
 
-        public SceneBuilder AddGeoPrimitive(IIntersect shape, Material mat, Transformation trans)
+        public SceneBuilder AddGeoPrimitive(IIntersect shape, Material mat)
         {
             if (_rayTracer == null)
                 _rayTracer = new RayTracer();
 
-            _rayTracer.Primitives.Add(new GeometricPrimitive(shape, mat, trans));
+            _rayTracer.Primitives.Add(new GeometricPrimitive(shape, mat));
 
             return this;
         }

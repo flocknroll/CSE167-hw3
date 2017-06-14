@@ -8,20 +8,31 @@ namespace hw3
 {
     public class Triangle : IIntersect
     {
-        public Triangle(List<Vertex> v)
+        public Triangle(List<Vertex> vertices, Transformation transformation)
         {
-            Vertex = v;
-            Normal = ComputeNormal(v[0].Normal != null);
+            Vertices = new List<Vertex>();
+            foreach (Vertex v in vertices)
+            {
+                RTPoint point = v.Location * transformation;
+                Normal normal = null;
+
+                if (v.Normal != null)
+                    normal = new Normal(v.Normal * transformation);
+
+                Vertices.Add(new Vertex(point, normal));
+            }
+
+            Normal = ComputeNormal();
         }
 
-        public List<Vertex> Vertex { get; }
+        public List<Vertex> Vertices { get; }
         public Normal Normal { get; private set; }
 
         public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo)
         {
-            RTPoint A = Vertex[0].Location;
-            RTPoint B = Vertex[1].Location;
-            RTPoint C = Vertex[2].Location;
+            RTPoint A = Vertices[0].Location;
+            RTPoint B = Vertices[1].Location;
+            RTPoint C = Vertices[2].Location;
 
             RTVector u = B - A;
 
@@ -59,10 +70,10 @@ namespace hw3
             return false;
         }
 
-        private Normal ComputeNormal(bool normVertex)
+        private Normal ComputeNormal()
         {
             Normal res;
-
+            bool normVertex = Vertices[0].Normal != null;
 
             if (normVertex)
             {
@@ -71,9 +82,9 @@ namespace hw3
             }
             else
             {
-                RTPoint A = Vertex[0].Location;
-                RTPoint B = Vertex[1].Location;
-                RTPoint C = Vertex[2].Location;
+                RTPoint A = Vertices[0].Location;
+                RTPoint B = Vertices[1].Location;
+                RTPoint C = Vertices[2].Location;
 
                 RTVector U = B - A;
                 RTVector V = C - A;

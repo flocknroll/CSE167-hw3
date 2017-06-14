@@ -24,7 +24,8 @@ namespace hw3
         public Vertex(RTPoint vertex, RTVector normal)
         {
             Location = vertex;
-            Normal = new Normal(normal.Vector);
+            if (normal != null)
+                Normal = new Normal(normal.Vector);
         }
 
         public Vertex(double x, double y, double z, double nx, double ny, double nz)

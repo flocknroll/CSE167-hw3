@@ -9,14 +9,16 @@ namespace hw3
 {
     public class Sphere : IIntersect
     {
-        public Sphere(RTPoint center, double radius)
+        public Sphere(RTPoint center, double radius, Transformation transformation)
         {
             Center = center;
             Radius = radius;
+            Transformation = transformation;
         }
 
         public RTPoint Center { get; }
         public double Radius { get; }
+        public Transformation Transformation { get; }
 
 
         public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo)

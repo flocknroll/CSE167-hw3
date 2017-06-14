@@ -22,6 +22,8 @@ namespace hw3
         private Material _currentMaterial;
         private Transformation _currentTransformation;
         private List<Vertex> _currentVertex;
+
+        private Stack<Transformation> _transStack;
         #endregion
 
         #region Helpers
@@ -61,6 +63,8 @@ namespace hw3
 
             string line;
             InitPrimitiveProperties();
+            _transStack = new Stack<Transformation>();
+            _currentTransformation = Transformation.Identity();
 
             using (FileStream fs = new FileStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read))
             using (StreamReader sr = new StreamReader(fs))
@@ -105,9 +109,9 @@ namespace hw3
                         case "sphere":
                             RTPoint center = PointFromConfig(split);
                             double radius = double.Parse(split[4]);
-                            Sphere s = new Sphere(center, radius);
+                            Sphere s = new Sphere(center, radius, _currentTransformation);
 
-                            sb.AddGeoPrimitive(s, _currentMaterial, _currentTransformation);
+                            sb.AddGeoPrimitive(s, _currentMaterial);
                             InitPrimitiveProperties();
                             break;
 
@@ -143,9 +147,37 @@ namespace hw3
                             vList.Add(_currentVertex[v2]);
                             vList.Add(_currentVertex[v3]);
 
-                            Triangle tri = new Triangle(vList);
-                            sb.AddGeoPrimitive(tri, _currentMaterial, _currentTransformation);
+                            Triangle tri = new Triangle(vList, _currentTransformation);
+                            sb.AddGeoPrimitive(tri, _currentMaterial);
                             InitPrimitiveProperties();
+                            break;
+                        #endregion
+
+                        #region Transforms
+                        case "translate":
+                            RTVector transvec = VectorFromConfig(split);
+                            Transformation trans = Transformation.Translate(transvec);
+                            _currentTransformation *= trans;
+                            break;
+
+                        case "rotate":
+                            RTVector rotaxis = VectorFromConfig(split);
+                            double degrees = double.Parse(split[4]);
+                            Transformation rot = Transformation.Rotate(rotaxis, degrees);
+                            _currentTransformation *= rot;
+                            break;
+
+                        case "scale":
+                            Transformation scale = Transformation.Scale(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3]));
+                            _currentTransformation *= scale;
+                            break;
+
+                        case "pushtransform":
+                            _transStack.Push(new Transformation(_currentTransformation));
+                            break;
+
+                        case "poptransform":
+                            _currentTransformation = _transStack.Pop();
                             break;
                         #endregion
 
