@@ -11,7 +11,7 @@ namespace hw3
     {
         public RTPoint(double x, double y, double z)
         {
-            Vector = Vector<double>.Build.Dense(new double[] { x, y, z, 0 });
+            Vector = Vector<double>.Build.Dense(new double[] { x, y, z, 1 });
         }
         public RTPoint(Vector<double> vector)
         {
@@ -25,6 +25,7 @@ namespace hw3
         public double X => Vector[0];
         public double Y => Vector[1];
         public double Z => Vector[2];
+        public double W => Vector[3];
 
         public static RTVector operator -(RTPoint p1, RTPoint p2)
         {
@@ -40,10 +41,14 @@ namespace hw3
             return new RTPoint(p1.Vector + p2.Vector);
         }
 
-
         public static RTPoint operator -(RTPoint p, RTVector v)
         {
             return new RTPoint(p.Vector - v.Vector);
+        }
+
+        public static RTPoint operator /(RTPoint p, double d)
+        {
+            return new RTPoint(p.Vector / d);
         }
     }
 }

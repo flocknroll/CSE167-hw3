@@ -29,11 +29,11 @@ namespace hw3
 
         public static Transformation Translate(RTVector vec)
         {
-            Matrix<double> mat = Matrix<double>.Build.Dense(4, 4, 0.0d);
+            Matrix<double> mat = Matrix<double>.Build.DenseIdentity(4);
 
             mat[0, 3] = vec.X;
-            mat[1, 3] = vec.X;
-            mat[2, 3] = vec.X;
+            mat[1, 3] = vec.Y;
+            mat[2, 3] = vec.Z;
 
             return new Transformation(mat);
         }
@@ -61,7 +61,7 @@ namespace hw3
 
         public static Transformation Scale(double x, double y, double z)
         {
-            Matrix<double> mat = Matrix<double>.Build.Dense(4, 4, 0.0d);
+            Matrix<double> mat = Matrix<double>.Build.DenseIdentity(4);
 
             mat[0, 0] = x;
             mat[1, 1] = y;
@@ -78,6 +78,11 @@ namespace hw3
         public static RTPoint operator *(RTPoint left, Transformation right)
         {
             return new RTPoint(left.Vector * right.Matrix);
+        }
+
+        public static RTPoint operator *(Transformation left, RTPoint right)
+        {
+            return new RTPoint(left.Matrix * right.Vector);
         }
 
         public static RTVector operator *(RTVector left, Transformation right)

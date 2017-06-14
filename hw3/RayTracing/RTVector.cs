@@ -11,7 +11,7 @@ namespace hw3
     {
         public RTVector(double x, double y, double z)
         {
-            Vector = Vector<double>.Build.Dense(new double[] { x, y, z, 0 });
+            Vector = Vector<double>.Build.Dense(new double[] { x, y, z, 1 });
         }
 
         public RTVector(Vector<double> vector)
@@ -28,12 +28,12 @@ namespace hw3
 
         public RTVector Normalize()
         {
-            return new RTVector(Vector.Normalize(2.0));
+            return new RTVector(Vector / Length());
         }
 
         public double Length()
         {
-            return Vector.L2Norm();
+            return Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2) + Math.Pow(Z, 2));
         }
 
         public Vector<double> Vector { get; protected set; }

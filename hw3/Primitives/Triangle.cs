@@ -13,7 +13,9 @@ namespace hw3
             Vertices = new List<Vertex>();
             foreach (Vertex v in vertices)
             {
-                RTPoint point = v.Location * transformation;
+                RTPoint point = transformation * v.Location;
+                //point /= point.W;
+
                 Normal normal = null;
 
                 if (v.Normal != null)
