@@ -18,9 +18,13 @@ namespace hw3
             _path = path;
         }
 
+        #region Data
         private Material _currentMaterial;
         private Transformation _currentTransformation;
+        private List<Vertex> _currentVertex;
+        #endregion
 
+        #region Helpers
         private void InitPrimitiveProperties()
         {
             RTColor lastAmbient = _currentMaterial?.Properties.Ambient;
@@ -48,7 +52,8 @@ namespace hw3
         private static RTPoint PointFromConfig(string[] split, int offset = 1)
         {
             return new RTPoint(double.Parse(split[offset]), double.Parse(split[offset + 1]), double.Parse(split[offset + 2]));
-        }
+        } 
+        #endregion
 
         public Scene BuildScene()
         {
@@ -106,7 +111,42 @@ namespace hw3
                             InitPrimitiveProperties();
                             break;
 
-                        // TODO : triangles
+                        case "maxverts":
+                            int maxverts = int.Parse(split[1]);
+                            _currentVertex = new List<Vertex>(maxverts);
+                            break;
+
+                        case "maxvertsnorms":
+                            int maxvertsnorms = int.Parse(split[1]);
+                            _currentVertex = new List<Vertex>(maxvertsnorms);
+                            break;
+
+                        case "vertex":
+                            RTPoint vertex = PointFromConfig(split);
+                            _currentVertex.Add(new Vertex(vertex));
+                            break;
+
+                        case "vertexnormal":
+                            RTPoint vertexnorm = PointFromConfig(split);
+                            RTVector normal = VectorFromConfig(split, 3);
+                            _currentVertex.Add(new Vertex(vertexnorm, normal));
+                            break;
+
+                        case "tri":
+                        case "trinormal":
+                            int v1 = int.Parse(split[1]);
+                            int v2 = int.Parse(split[2]);
+                            int v3 = int.Parse(split[3]);
+
+                            List<Vertex> vList = new List<Vertex>();
+                            vList.Add(_currentVertex[v1]);
+                            vList.Add(_currentVertex[v2]);
+                            vList.Add(_currentVertex[v3]);
+
+                            Triangle tri = new Triangle(vList);
+                            sb.AddGeoPrimitive(tri, _currentMaterial, _currentTransformation);
+                            InitPrimitiveProperties();
+                            break;
                         #endregion
 
                         #region Lights

@@ -12,6 +12,8 @@ namespace hw3
     public class Sampler: IEnumerator<Point>, IEnumerable<Point>
     {
         private int _current;
+        private Task _monitor;
+
         public Sampler(int width, int height)
         {
             Width = width;
@@ -22,7 +24,12 @@ namespace hw3
         public int Width { get; }
         public int Height { get; }
 
-        public Point Current => new Point(_current % Width, _current / Width);
+        public Point Current {
+            get
+            {
+                return new Point(_current % Width, _current / Width);
+            }
+        }
 
         object IEnumerator.Current => Current;
 

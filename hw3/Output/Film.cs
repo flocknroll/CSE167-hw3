@@ -27,7 +27,7 @@ namespace hw3
         {
             lock (_lock)
             {
-                _film.SetPixel(point.X, point.Y, color); 
+                _film.SetPixel(point.X, point.Y, color);
             }
         }
 
