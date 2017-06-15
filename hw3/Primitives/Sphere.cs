@@ -71,6 +71,9 @@ namespace hw3
                 {
                     geo.Point = tPoint + t * tVec;
                     geo.Normal = new Normal(geo.Point - Center);
+
+                    geo.Point = Transformation.ApplyTo(geo.Point);
+                    geo.Normal = new Normal(Transformation.Compute().Inverse().Transpose() * geo.Normal.Vector);
                 }
 
                 return true;

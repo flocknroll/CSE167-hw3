@@ -16,12 +16,12 @@ namespace hw3
 
         public RTVector(Vector<double> vector)
         {
-            Vector = vector;
+            Vector = Vector<double>.Build.Dense(new double[] { vector[0], vector[1], vector[2], 0 });
         }
 
         public RTVector(RTVector vector)
         {
-            Vector = vector.Vector;
+            Vector = Vector<double>.Build.Dense(new double[] { vector.X, vector.Y, vector.Z, 0 });
         }
 
         public static RTVector Zero => new RTVector(0, 0, 0);
