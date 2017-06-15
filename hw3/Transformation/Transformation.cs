@@ -48,6 +48,8 @@ namespace hw3
             }
 
             return matrix;
+
+            //return Compute().Inverse();
         }
 
         public RTVector ApplyTo(RTVector v)

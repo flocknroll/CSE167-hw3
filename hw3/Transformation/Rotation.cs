@@ -22,6 +22,7 @@ namespace hw3
         {
             RTVector axis = axisIn.Normalize();
             Matrix<double> part1 = Matrix<double>.Build.DenseDiagonal(4, 4, Math.Cos(radians));
+            part1[3, 3] = 1;
 
             Matrix<double> part2 = Matrix<double>.Build.DenseOfArray(new double[,] {{ Math.Pow(axis.X, 2), axis.X * axis.Y, axis.X * axis.Z, 0 },
                                                                                     { axis.X * axis.Y, Math.Pow(axis.Y, 2), axis.Y * axis.Z, 0 },
@@ -45,7 +46,7 @@ namespace hw3
 
         public Matrix<double> ComputeInverse()
         {
-            return ComputeMatrix(Axis, (-Degrees).ToRadians());
+            return ComputeMatrix(Axis, -Degrees.ToRadians());
         }
     }
 }
