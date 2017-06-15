@@ -13,13 +13,13 @@ namespace hw3
             Vertices = new List<Vertex>();
             foreach (Vertex v in vertices)
             {
-                RTPoint point = transformation * v.Location;
+                RTPoint point = transformation.ApplyTo(v.Location);
                 //point /= point.W;
 
                 Normal normal = null;
 
                 if (v.Normal != null)
-                    normal = new Normal(v.Normal * transformation);
+                    normal = new Normal(transformation.ApplyTo(v.Normal));
 
                 Vertices.Add(new Vertex(point, normal));
             }

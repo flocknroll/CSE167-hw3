@@ -61,11 +61,6 @@ namespace hw3
             return new RTVector(d * v.Vector);
         }
 
-        public static RTVector operator *(Transformation t, RTVector v)
-        {
-            return new RTVector(t.Matrix * v.Vector);
-        }
-
         public static RTVector operator +(RTVector v1, RTVector v2)
         {
             return new RTVector(v1.Vector + v2.Vector);

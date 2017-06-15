@@ -73,9 +73,14 @@
     <Compile Include="RayTracing\RayTracer.cs" />
     <Compile Include="RayTracing\RTPoint.cs" />
     <Compile Include="RayTracing\RTVector.cs" />
-    <Compile Include="RayTracing\Transformation.cs" />
+    <Compile Include="Transformation\Identity.cs" />
+    <Compile Include="Transformation\ITransform.cs" />
+    <Compile Include="Transformation\Rotation.cs" />
+    <Compile Include="Transformation\Scaling.cs" />
+    <Compile Include="Transformation\Transformation.cs" />
     <Compile Include="Primitives\IIntersect.cs" />
     <Compile Include="Primitives\Sphere.cs" />
+    <Compile Include="Transformation\Translation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

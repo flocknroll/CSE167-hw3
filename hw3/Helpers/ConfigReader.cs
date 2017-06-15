@@ -62,7 +62,7 @@ namespace hw3
             string line;
             InitPrimitiveProperties();
             _transStack = new Stack<Transformation>();
-            _currentTransformation = Transformation.Identity();
+            _currentTransformation = new Transformation();
 
             using (FileStream fs = new FileStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read))
             using (StreamReader sr = new StreamReader(fs))
@@ -74,7 +74,7 @@ namespace hw3
                     if (string.IsNullOrWhiteSpace(line) || line[0] == '#')
                         continue;
 
-                    string[] split = line.Split(' ');
+                    string[] split = line.Split(" \t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
                     switch (split[0])
                     {
@@ -154,20 +154,17 @@ namespace hw3
                         #region Transforms
                         case "translate":
                             RTVector transvec = VectorFromConfig(split);
-                            Transformation trans = Transformation.Translate(transvec);
-                            _currentTransformation *= trans;
+                            _currentTransformation.AddTransform(new Translation(transvec));
                             break;
 
                         case "rotate":
                             RTVector rotaxis = VectorFromConfig(split);
                             double degrees = double.Parse(split[4]);
-                            Transformation rot = Transformation.Rotate(rotaxis, degrees);
-                            _currentTransformation *= rot;
+                            _currentTransformation.AddTransform(new Rotation(rotaxis, degrees));
                             break;
 
                         case "scale":
-                            Transformation scale = Transformation.Scale(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3]));
-                            _currentTransformation *= scale;
+                            _currentTransformation.AddTransform(new Scaling(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3])));
                             break;
 
                         case "pushtransform":
