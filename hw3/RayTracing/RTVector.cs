@@ -86,6 +86,11 @@ namespace hw3
             return new RTVector(v.Vector / d);
         }
 
+        public static RTVector operator /(RTVector v1, RTVector v2)
+        {
+            return new RTVector(v1.Vector / v2.Vector);
+        }
+
         public static RTVector operator -(RTVector v)
         {
             return new RTVector(-v.Vector);

@@ -36,10 +36,8 @@ namespace hw3
             RTPoint B = Vertices[1].Location;
             RTPoint C = Vertices[2].Location;
 
-            RTVector u = B - A;
-
             RTVector p0 = new RTVector(ray.Point.Vector);
-            pos = (RTVector.DotProduct(u, Normal) - RTVector.DotProduct(p0, Normal)) / RTVector.DotProduct(ray.Vector, Normal);
+            pos = RTVector.DotProduct(A - ray.Point, Normal) / RTVector.DotProduct(ray.Vector, Normal);
 
             geo = new LocalGeo();
             if (pos >= ray.TMin && pos <= ray.TMax)
@@ -47,6 +45,7 @@ namespace hw3
                 geo.Point = ray.Point + pos * ray.Vector;
                 geo.Normal = Normal;
 
+                RTVector u = B - A;
                 RTVector v = C - A;
                 RTVector w = geo.Point - A;
 
