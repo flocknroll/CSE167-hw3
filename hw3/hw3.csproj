@@ -85,7 +85,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Tests\first.test">
+    <None Include="Tests\default.test">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Tests\scene4-ambient.test">

@@ -9,9 +9,9 @@ namespace hw3
 {
     public class RTVector
     {
-        public RTVector(double x, double y, double z, double w = 0)
+        public RTVector(double x, double y, double z)
         {
-            Vector = Vector<double>.Build.Dense(new double[] { x, y, z, w });
+            Vector = Vector<double>.Build.Dense(new double[] { x, y, z, 0 });
         }
 
         public RTVector(Vector<double> vector)
@@ -24,7 +24,7 @@ namespace hw3
             Vector = vector.Vector;
         }
 
-        public static RTVector Zero => new RTVector(0, 0, 0, 0);
+        public static RTVector Zero => new RTVector(0, 0, 0);
 
         public RTVector Normalize()
         {
@@ -41,14 +41,12 @@ namespace hw3
         public double X => Vector[0];
         public double Y => Vector[1];
         public double Z => Vector[2];
-        public double W => Vector[3];
 
         public static RTVector CrossProduct(RTVector l, RTVector r)
         {
             return new RTVector(l.Y * r.Z - l.Z * r.Y,
                                 -l.X * r.Z + l.Z * r.X,
-                                l.X * r.Y - l.Y * r.X,
-                                0);
+                                l.X * r.Y - l.Y * r.X);
         }
 
         public static double DotProduct(RTVector v1, RTVector v2)

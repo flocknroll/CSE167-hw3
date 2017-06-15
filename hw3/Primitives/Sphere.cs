@@ -23,9 +23,10 @@ namespace hw3
 
         public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo, out double t)
         {
-            RTVector ec = ray.Point - Center;
-            RTVector tVec = Transformation.ApplyInverseTo(new RTVector(ray.Vector.X, ray.Vector.Y, ray.Vector.Z, 1));
-            //tVec /= tVec.W;
+            RTPoint tPoint = Transformation.ApplyInverseTo(new RTPoint(ray.Point.X, ray.Point.Y, ray.Point.Z));
+            RTVector tVec = Transformation.ApplyInverseTo(new RTVector(ray.Vector.X, ray.Vector.Y, ray.Vector.Z));
+
+            RTVector ec = tPoint - Center;
 
             double a = RTVector.DotProduct(tVec, tVec);
             double b = 2.0d * RTVector.DotProduct(tVec, ec);
@@ -68,7 +69,7 @@ namespace hw3
             {
                 if (computeGeo)
                 {
-                    geo.Point = ray.Point + t * tVec;
+                    geo.Point = tPoint + t * tVec;
                     geo.Normal = new Normal(geo.Point - Center);
                 }
 

@@ -18,8 +18,9 @@ namespace hw3
         public RTVector Axis { get; set; }
         public double Degrees { get; set; }
 
-        private Matrix<double> ComputeMatrix(RTVector axis, double radians)
+        private Matrix<double> ComputeMatrix(RTVector axisIn, double radians)
         {
+            RTVector axis = axisIn.Normalize();
             Matrix<double> part1 = Matrix<double>.Build.DenseDiagonal(4, 4, Math.Cos(radians));
 
             Matrix<double> part2 = Matrix<double>.Build.DenseOfArray(new double[,] {{ Math.Pow(axis.X, 2), axis.X * axis.Y, axis.X * axis.Z, 0 },

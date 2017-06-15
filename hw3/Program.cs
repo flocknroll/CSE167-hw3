@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace hw3
 {
@@ -14,7 +11,14 @@ namespace hw3
     {
         static void Main(string[] args)
         {
-            ConfigReader cr = new ConfigReader(args[0]);
+            string inPath = args[0];
+            if (string.IsNullOrEmpty(inPath))
+                inPath = @"Tests\default.test";
+
+            if (!File.Exists(inPath))
+                return;
+
+            ConfigReader cr = new ConfigReader(inPath);
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 
             using (Scene scene = cr.BuildScene())
