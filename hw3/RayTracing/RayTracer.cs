@@ -23,7 +23,7 @@ namespace hw3
 
         private RTColor Shading(LocalGeo geo, ShadingInfos si, Ray camRay, Ray lightRay, RTColor lightCol)
         {
-            double nDotL = RTVector.DotProduct(geo.Normal, lightRay.Vector);
+            double nDotL = RTVector.DotProduct(geo.Normal, lightRay.Vector.Normalize());
             RTColor lambert = lightCol * si.Diffuse * (nDotL > 0 ? nDotL : 0.0d);
 
             RTVector half = (lightRay.Vector.Normalize() - camRay.Vector.Normalize()).Normalize();
@@ -54,8 +54,10 @@ namespace hw3
 
                         ShadingInfos si = prim.GetShading(geo);
 
+                        // Ambient & emission
                         res = si.Emission + si.Ambient;
 
+                        // Phong shading
                         foreach (ILight light in Lights)
                         {
                             shadow = false;
@@ -71,6 +73,14 @@ namespace hw3
                             if (!shadow)
                                 res += Shading(geo, si, ray, lightRay, lightCol);
                         }
+
+                        // Reflection
+                        if (si.Specular.ARGB[1] > 0 && si.Specular.ARGB[2] > 0 && si.Specular.ARGB[3] > 0 && depth < MaxDepth)
+                        {
+                            Ray reflected = new Ray(geo.Point, ray.Vector - 2.0d * RTVector.DotProduct(ray.Vector, geo.Normal) * geo.Normal, 0.0001d, double.MaxValue, false);
+                            res += si.Specular * Trace(reflected, depth + 1);
+                        }
+
                     }
                 }
             }
