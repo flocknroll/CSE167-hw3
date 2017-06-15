@@ -26,12 +26,10 @@ namespace hw3
         private Film _film;
         public string OutPath { get; }
 
-        public long Render()
+        public void Render()
         {
             _sampler.Reset();
-            Stopwatch sw = new Stopwatch();
-
-            sw.Start();
+            _film.StartMonitor();
 #if DEBUG
             while (_sampler.MoveNext())
             {
@@ -47,10 +45,8 @@ namespace hw3
                 _film.Commit(point, color);
             });
 #endif
-            sw.Stop();
 
             _film.WriteToFile(OutPath, ImageFormat.Png);
-            return sw.ElapsedMilliseconds;
         }
 
         public void Dispose()

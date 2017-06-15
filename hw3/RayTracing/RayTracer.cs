@@ -77,7 +77,7 @@ namespace hw3
                         // Reflection
                         if (si.Specular.ARGB[1] > 0 && si.Specular.ARGB[2] > 0 && si.Specular.ARGB[3] > 0 && depth < MaxDepth)
                         {
-                            Ray reflected = new Ray(geo.Point, ray.Vector - 2.0d * RTVector.DotProduct(ray.Vector, geo.Normal) * geo.Normal, 0.0001d, double.MaxValue, false);
+                            Ray reflected = new Ray(geo.Point, ray.Vector - 2.0d * RTVector.DotProduct(ray.Vector, geo.Normal) * geo.Normal, 0.1d, double.MaxValue, false);
                             res += si.Specular * Trace(reflected, depth + 1);
                         }
 

@@ -23,7 +23,7 @@ namespace hw3
 
             using (Scene scene = cr.BuildScene())
             {
-                Console.WriteLine($"Temps : {scene.Render()}ms");
+                scene.Render();
 
                 Process.Start(scene.OutPath);
             }
