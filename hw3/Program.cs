@@ -11,7 +11,7 @@ namespace hw3
     {
         static void Main(string[] args)
         {
-            string inPath = args[0];
+            string inPath = args.Length > 0 ? args[0] : string.Empty;
             if (string.IsNullOrEmpty(inPath))
                 inPath = @"Tests\default.test";
 

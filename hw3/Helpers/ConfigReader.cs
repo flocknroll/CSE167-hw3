@@ -30,10 +30,22 @@ namespace hw3
         private void InitPrimitiveProperties()
         {
             RTColor lastAmbient = _currentMaterial?.Properties.Ambient;
+            RTColor lastDiffuse = _currentMaterial?.Properties.Diffuse;
+            RTColor lastEmission = _currentMaterial?.Properties.Emission;
+            RTColor lastSpecular = _currentMaterial?.Properties.Specular;
+            double? lastShininess = _currentMaterial?.Properties.Shininess;
 
             _currentMaterial = new Material();
             if (lastAmbient != null)
                 _currentMaterial.Properties.Ambient = lastAmbient;
+            if (lastDiffuse != null)
+                _currentMaterial.Properties.Diffuse = lastDiffuse;
+            if (lastEmission != null)
+                _currentMaterial.Properties.Emission = lastEmission;
+            if (lastSpecular != null)
+                _currentMaterial.Properties.Specular = lastSpecular;
+            if (lastShininess.HasValue)
+                _currentMaterial.Properties.Shininess = lastShininess.Value;
         }
 
         private static RTColor ColorFromConfig(string[] split, int offset = 1)

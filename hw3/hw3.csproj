@@ -91,7 +91,9 @@
     <None Include="Tests\scene4-ambient.test">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Tests\scene4-diffuse.test" />
+    <None Include="Tests\scene4-diffuse.test">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Tests\scene4-emission.test" />
     <None Include="Tests\scene4-specular.test" />
     <None Include="Tests\scene5.test" />

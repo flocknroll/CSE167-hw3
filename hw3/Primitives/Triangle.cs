@@ -90,7 +90,7 @@ namespace hw3
                 RTVector U = B - A;
                 RTVector V = C - A;
 
-                res = new Normal(RTVector.CrossProduct(V, U).Vector);
+                res = new Normal(RTVector.CrossProduct(U, V).Vector);
             }
 
             return res;
