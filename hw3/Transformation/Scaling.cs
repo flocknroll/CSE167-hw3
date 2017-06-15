@@ -35,9 +35,9 @@ namespace hw3
         {
             Matrix<double> mat = Matrix<double>.Build.DenseIdentity(4);
 
-            mat[0, 0] = -X;
-            mat[1, 1] = -Y;
-            mat[2, 2] = -Z;
+            mat[0, 0] = 1.0d / X;
+            mat[1, 1] = 1.0d / Y;
+            mat[2, 2] = 1.0d / Z;
 
             return mat;
         }
