@@ -35,11 +35,12 @@ namespace hw3
             _commited = 0L;
         }
 
-        public void Commit(Point point, Color color)
+        public void Commit(RTPoint point, Color color)
         {
             lock (_lock)
             {
-                _film.SetPixel(point.X, point.Y, color);
+                // TODO : "accumuler" valeur si dans même pixel
+                _film.SetPixel((int)Math.Floor(point.X), (int)Math.Floor(point.Y), color);
             }
             Interlocked.Increment(ref _commited);
 

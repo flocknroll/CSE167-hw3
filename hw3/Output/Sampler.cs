@@ -9,9 +9,12 @@ using System.Threading.Tasks;
 
 namespace hw3
 {
-    public class Sampler: IEnumerator<Point>, IEnumerable<Point>
+    public class Sampler: IEnumerator<RTPoint>, IEnumerable<RTPoint>
     {
-        private int _current;
+        private double _current;
+        private object _lock = new object();
+        // On vise le milieu des pixels
+        private readonly double PIXEL_OFFSET = 0.5d;
 
         public Sampler(int width, int height)
         {
@@ -23,10 +26,10 @@ namespace hw3
         public int Width { get; }
         public int Height { get; }
 
-        public Point Current {
+        public RTPoint Current {
             get
             {
-                return new Point(_current % Width, _current / Width);
+                return new RTPoint(_current % Width, _current / Width, 0);
             }
         }
 
@@ -34,14 +37,20 @@ namespace hw3
 
         public bool MoveNext()
         {
-            Interlocked.Increment(ref _current);
+            lock (_lock)
+            {
+                ++_current;
+            }
 
             return _current < Width * Height;
         }
 
         public void Reset()
         {
-            Interlocked.Exchange(ref _current, -1);
+            lock (_lock)
+            {
+                _current = PIXEL_OFFSET - 1d;
+            }
         }
 
         public void Dispose()
@@ -49,7 +58,7 @@ namespace hw3
             //
         }
 
-        public IEnumerator<Point> GetEnumerator()
+        public IEnumerator<RTPoint> GetEnumerator()
         {
             return this;
         }

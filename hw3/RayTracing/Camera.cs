@@ -42,7 +42,7 @@ namespace hw3
         public double FovX { get; }
         public double FovY { get; }
 
-        public Ray GenerateRay(Point p)
+        public Ray GenerateRay(RTPoint p)
         {
             double alpha = Math.Tan(FovX / 2.0d) * ((p.X - (Width / 2.0d)) / (Width / 2.0d));
             double beta = Math.Tan(FovY / 2.0d) * (((Height / 2.0d) - p.Y) / (Height / 2.0d));
