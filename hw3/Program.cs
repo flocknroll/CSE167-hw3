@@ -25,7 +25,9 @@ namespace hw3
             {
                 scene.Render();
 
-                Process.Start(scene.OutPath);
+#if DEBUG
+                Process.Start(scene.OutPath); 
+#endif
             }
         }
     }

@@ -54,9 +54,7 @@ namespace hw3
                 TimeSpan elapsed = TimeSpan.FromMilliseconds(time);
                 TimeSpan remaining = TimeSpan.FromSeconds((total - _commited) / pps);
 
-                Console.SetCursorPosition(0, 0);
                 Console.Write($"\rElapsed : {elapsed.TotalHours:0}:{elapsed.Minutes:00}:{elapsed.Seconds:00} - {_commited}/{total} - {pps:0.00} pixel/s - Est. remaining : {remaining.TotalHours:0}:{remaining.Minutes:00}:{remaining.Seconds:00} <>");
-                
             }
         }
 
