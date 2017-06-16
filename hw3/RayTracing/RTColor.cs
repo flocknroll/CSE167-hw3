@@ -1,4 +1,4 @@
-﻿using MathNet.Numerics.LinearAlgebra;
+﻿using System.Numerics;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,41 +12,46 @@ namespace hw3
     {
         public RTColor()
         {
-            ARGB = Vector<double>.Build.Dense(new double[] { 1.0d, 0.0d, 0.0d, 0.0d });
+            ARGB = new Vector4(1.0f, 0.0f, 0.0f, 0.0f);
         }
 
-        public RTColor(double alpha, double red, double green, double blue)
+        public RTColor(float alpha, float red, float green, float blue)
         {
-            ARGB = Vector<double>.Build.DenseOfArray(new double[] { alpha, red, green, blue });
+            ARGB = new Vector4(alpha, red, green, blue);
         }
 
         public RTColor(Color color)
         {
-            ARGB = Vector<double>.Build.DenseOfArray(new double[] { color.A / 255d, color.R / 255d, color.G / 255d, color.B / 255d });
+            ARGB = new Vector4(color.A / 255f, color.R / 255f, color.G / 255f, color.B / 255f);
         }
 
-        public RTColor(Vector<double> vector)
+        public RTColor(Vector4 vector)
         {
             ARGB = vector;
         }
 
-        public Vector<double> ARGB { get; }
+        protected Vector4 ARGB { get; }
+
+        public float Alpha => ARGB.X;
+        public float Red => ARGB.Y;
+        public float Green => ARGB.Z;
+        public float Blue => ARGB.W;
 
         public Color ToColor()
         {
-            int alpha = (int)Math.Floor(ARGB[0] * 255d);
+            int alpha = (int)(float)Math.Floor(ARGB.X * 255d);
             if (alpha > 255)
                 alpha = 255;
 
-            int red = (int)Math.Floor(ARGB[1] * 255d);
+            int red = (int)(float)Math.Floor(ARGB.Y * 255d);
             if (red > 255)
                 red = 255;
 
-            int green = (int)Math.Floor(ARGB[2] * 255d);
+            int green = (int)(float)Math.Floor(ARGB.Z * 255d);
             if (green > 255)
                 green = 255;
 
-            int blue = (int)Math.Floor(ARGB[3] * 255d);
+            int blue = (int)(float)Math.Floor(ARGB.W * 255d);
             if (blue > 255)
                 blue = 255;
 
@@ -58,24 +63,21 @@ namespace hw3
             return new RTColor(c1.ARGB + c2.ARGB);
         }
 
-        public static RTColor operator *(double d, RTColor c)
+        public static RTColor operator *(float d, RTColor c)
         {
             return new RTColor(d * c.ARGB);
         }
-        public static RTColor operator *(RTColor c, double d)
+        public static RTColor operator *(RTColor c, float d)
         {
             return d * c;
         }
 
         public static RTColor operator *(RTColor c1, RTColor c2)
         {
-            return new RTColor(c1.ARGB[0] * c2.ARGB[0],
-                                c1.ARGB[1] * c2.ARGB[1],
-                                c1.ARGB[2] * c2.ARGB[2],
-                                c1.ARGB[3] * c2.ARGB[3]);
+            return new RTColor(c1.ARGB * c2.ARGB);
         }
 
-        public static RTColor operator /(RTColor c, double d)
+        public static RTColor operator /(RTColor c, float d)
         {
             return new RTColor(c.ARGB / d);
         }

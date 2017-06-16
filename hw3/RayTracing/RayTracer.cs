@@ -23,15 +23,15 @@ namespace hw3
 
         private RTColor Shading(LocalGeo geo, ShadingInfos si, Ray camRay, Ray lightRay, RTColor lightCol)
         {
-            double nDotL = RTVector.DotProduct(geo.Normal, lightRay.Vector.Normalize());
-            RTColor lambert = lightCol * si.Diffuse * (nDotL > 0 ? nDotL : 0.0d);
+            float nDotL = RTVector.DotProduct(geo.Normal, lightRay.Vector.Normalize());
+            RTColor lambert = lightCol * si.Diffuse * (nDotL > 0 ? nDotL : 0.0f);
 
             RTVector half = (lightRay.Vector.Normalize() - camRay.Vector.Normalize()).Normalize();
-            double nDotH = RTVector.DotProduct(geo.Normal, half);
-            RTColor phong = lightCol * si.Specular * Math.Pow((nDotH > 0 ? nDotH : 0.0d), si.Shininess);
+            float nDotH = RTVector.DotProduct(geo.Normal, half);
+            RTColor phong = lightCol * si.Specular * (float)Math.Pow((nDotH > 0 ? nDotH : 0.0f), si.Shininess);
 
-            double r = lightRay.Directional ? 0 : (geo.Point + lightRay.Vector).Vector.L2Norm();
-            RTColor res = (lambert + phong) / (Attenuation.Constant + Attenuation.Linear * r + Attenuation.Quadratic * Math.Pow(r, 2));
+            float r = lightRay.Directional ? 0 : (geo.Point + lightRay.Vector).Length;
+            RTColor res = (lambert + phong) / (Attenuation.Constant + Attenuation.Linear * r + Attenuation.Quadratic * (float)Math.Pow(r, 2));
 
             return res;
         }
@@ -40,8 +40,8 @@ namespace hw3
         {
             RTColor res = new RTColor();
 
-            double lastT = double.MaxValue;
-            double currT;
+            float lastT = float.MaxValue;
+            float currT;
             bool shadow;
             foreach (IPrimitive prim in Primitives)
             {
@@ -75,9 +75,9 @@ namespace hw3
                         }
 
                         // Reflection
-                        if (si.Specular.ARGB[1] > 0 && si.Specular.ARGB[2] > 0 && si.Specular.ARGB[3] > 0 && depth < MaxDepth)
+                        if (si.Specular.Red > 0 && si.Specular.Green > 0 && si.Specular.Blue > 0 && depth < MaxDepth)
                         {
-                            Ray reflected = new Ray(geo.Point, ray.Vector - 2.0d * RTVector.DotProduct(ray.Vector, geo.Normal) * geo.Normal, 0.1d, double.MaxValue, false);
+                            Ray reflected = new Ray(geo.Point, ray.Vector - 2.0f * RTVector.DotProduct(ray.Vector, geo.Normal) * geo.Normal, 0.1f, float.MaxValue, false);
                             res += si.Specular * Trace(reflected, depth + 1);
                         }
 

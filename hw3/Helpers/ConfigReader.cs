@@ -1,5 +1,4 @@
-﻿using MathNet.Numerics.LinearAlgebra;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -33,7 +32,7 @@ namespace hw3
             RTColor lastDiffuse = _currentMaterial?.Properties.Diffuse;
             RTColor lastEmission = _currentMaterial?.Properties.Emission;
             RTColor lastSpecular = _currentMaterial?.Properties.Specular;
-            double? lastShininess = _currentMaterial?.Properties.Shininess;
+            float? lastShininess = _currentMaterial?.Properties.Shininess;
 
             _currentMaterial = new Material();
             if (lastAmbient != null)
@@ -50,20 +49,20 @@ namespace hw3
 
         private static RTColor ColorFromConfig(string[] split, int offset = 1)
         {
-            return new RTColor(1.0d,
-                            double.Parse(split[offset]),
-                            double.Parse(split[offset + 1]),
-                            double.Parse(split[offset + 2]));
+            return new RTColor(1.0f,
+                            float.Parse(split[offset]),
+                            float.Parse(split[offset + 1]),
+                            float.Parse(split[offset + 2]));
         }
 
         private static RTVector VectorFromConfig(string[] split, int offset = 1)
         {
-            return new RTVector(double.Parse(split[offset]), double.Parse(split[offset + 1]), double.Parse(split[offset + 2]));
+            return new RTVector(float.Parse(split[offset]), float.Parse(split[offset + 1]), float.Parse(split[offset + 2]));
         }
 
         private static RTPoint PointFromConfig(string[] split, int offset = 1)
         {
-            return new RTPoint(double.Parse(split[offset]), double.Parse(split[offset + 1]), double.Parse(split[offset + 2]));
+            return new RTPoint(float.Parse(split[offset]), float.Parse(split[offset + 1]), float.Parse(split[offset + 2]));
         } 
         #endregion
 
@@ -110,7 +109,7 @@ namespace hw3
                             RTPoint lFrom = PointFromConfig(split);
                             RTPoint lAt = PointFromConfig(split, 4);
                             RTVector up = VectorFromConfig(split, 7);
-                            double fovy = double.Parse(split[10]);
+                            float fovy = float.Parse(split[10]);
                             sb.SetCamera(lFrom, lAt, up, fovy);
                             break;
                         #endregion
@@ -118,7 +117,7 @@ namespace hw3
                         #region Geometry
                         case "sphere":
                             RTPoint center = PointFromConfig(split);
-                            double radius = double.Parse(split[4]);
+                            float radius = float.Parse(split[4]);
                             Sphere s = new Sphere(center, radius, _currentTransformation);
 
                             sb.AddGeoPrimitive(s, _currentMaterial);
@@ -171,12 +170,12 @@ namespace hw3
 
                         case "rotate":
                             RTVector rotaxis = VectorFromConfig(split);
-                            double degrees = double.Parse(split[4]);
+                            float degrees = float.Parse(split[4]);
                             _currentTransformation.AddTransform(new Rotation(rotaxis, degrees));
                             break;
 
                         case "scale":
-                            _currentTransformation.AddTransform(new Scaling(double.Parse(split[1]), double.Parse(split[2]), double.Parse(split[3])));
+                            _currentTransformation.AddTransform(new Scaling(float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3])));
                             break;
 
                         case "pushtransform":
@@ -204,9 +203,9 @@ namespace hw3
                         case "attenuation":
                             Attenuation att = new Attenuation
                             {
-                                Constant = double.Parse(split[1]),
-                                Linear = double.Parse(split[2]),
-                                Quadratic = double.Parse(split[3])
+                                Constant = float.Parse(split[1]),
+                                Linear = float.Parse(split[2]),
+                                Quadratic = float.Parse(split[3])
                             };
                             sb.SetAttenuation(att);
                             break;
@@ -229,7 +228,7 @@ namespace hw3
                             break;
 
                         case "shininess":
-                            double shine = double.Parse(split[1]);
+                            float shine = float.Parse(split[1]);
                             _currentMaterial.Properties.Shininess = shine;
                             break;
 

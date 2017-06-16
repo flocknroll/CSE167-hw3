@@ -30,13 +30,13 @@ namespace hw3
         public List<Vertex> Vertices { get; }
         public Normal Normal { get; private set; }
 
-        public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo, out double pos)
+        public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo, out float pos)
         {
             RTPoint A = Vertices[0].Location;
             RTPoint B = Vertices[1].Location;
             RTPoint C = Vertices[2].Location;
 
-            RTVector p0 = new RTVector(ray.Point.Vector);
+            RTVector p0 = new RTVector(ray.Point);
             pos = RTVector.DotProduct(A - ray.Point, Normal) / RTVector.DotProduct(ray.Vector, Normal);
 
             geo = new LocalGeo();
@@ -61,9 +61,9 @@ namespace hw3
                 if (RTVector.DotProduct(uCrossW, uCrossV) < 0)
                     return false;
 
-                double denom = uCrossV.Vector.L1Norm();
-                double r = vCrossW.Vector.L1Norm() / denom;
-                double t = uCrossW.Vector.L1Norm() / denom;
+                float denom = uCrossV.Length;
+                float r = vCrossW.Length / denom;
+                float t = uCrossW.Length / denom;
 
                 return r + t <= 1;
             }
@@ -90,7 +90,7 @@ namespace hw3
                 RTVector U = B - A;
                 RTVector V = C - A;
 
-                res = new Normal(RTVector.CrossProduct(U, V).Vector);
+                res = new Normal(RTVector.CrossProduct(U, V));
             }
 
             return res;

@@ -1,4 +1,4 @@
-﻿using MathNet.Numerics.LinearAlgebra;
+﻿using System.Numerics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace hw3
             Normal = null;
         }
 
-        public Vertex(double x, double y, double z)
+        public Vertex(float x, float y, float z)
         {
             Location = new RTPoint(x, y, z);
             Normal = null;
@@ -25,10 +25,10 @@ namespace hw3
         {
             Location = vertex;
             if (normal != null)
-                Normal = new Normal(normal.Vector);
+                Normal = new Normal(normal);
         }
 
-        public Vertex(double x, double y, double z, double nx, double ny, double nz)
+        public Vertex(float x, float y, float z, float nx, float ny, float nz)
         {
             Location = new RTPoint(x, y, z);
             Normal = new Normal(nx, ny, nz);

@@ -9,7 +9,7 @@ namespace hw3
 {
     public class Material : IShading
     {
-        private static readonly RTColor DEFAULT_AMBIENT = new RTColor(0, 0.2d, 0.2d, 0.2d);
+        private static readonly RTColor DEFAULT_AMBIENT = new RTColor(0, 0.2f, 0.2f, 0.2f);
 
         public Material()
         {

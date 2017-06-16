@@ -1,4 +1,4 @@
-﻿using MathNet.Numerics.LinearAlgebra;
+﻿using System.Numerics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +9,25 @@ namespace hw3
 {
     public class Normal : RTVector
     {
-        public Normal(double x, double y, double z) : base(x, y, z)
+        public Normal(float x, float y, float z) : base(x, y, z)
         {
-            Vector = Normalize().Vector;
+            Vector4 norm = Vector4.Normalize(new Vector4(x, y, z, 0));
+
+            Vector = norm;
         }
 
-        public Normal(Vector<double> vec) : base(vec)
+        public Normal(Vector4 vec) : base(vec)
         {
-            Vector = Normalize().Vector;
+            Vector4 norm = Vector4.Normalize(new Vector4(vec.X, vec.Y, vec.Z, 0));
+
+            Vector = norm;
         }
 
         public Normal(RTVector vec) : base(vec)
         {
-            Vector = Normalize().Vector;
+            Vector4 norm = Vector4.Normalize(new Vector4(vec.X, vec.Y, vec.Z, 0));
+
+            Vector = norm;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace hw3
             lock (_lock)
             {
                 // TODO : "accumuler" valeur si dans même pixel
-                _film.SetPixel((int)Math.Floor(point.X), (int)Math.Floor(point.Y), color);
+                _film.SetPixel((int)(float)Math.Floor(point.X), (int)(float)Math.Floor(point.Y), color);
             }
             Interlocked.Increment(ref _commited);
 
@@ -50,7 +50,7 @@ namespace hw3
                 long total = Width * Height;
                 _lastCommit = time;
 
-                double pps = (_commited / (double)time) * 1000d;
+                float pps = (_commited / (float)time) * 1000f;
                 TimeSpan elapsed = TimeSpan.FromMilliseconds(time);
                 TimeSpan remaining = TimeSpan.FromSeconds((total - _commited) / pps);
 

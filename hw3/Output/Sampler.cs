@@ -11,10 +11,10 @@ namespace hw3
 {
     public class Sampler: IEnumerator<RTPoint>, IEnumerable<RTPoint>
     {
-        private double _current;
+        private float _current;
         private object _lock = new object();
         // On vise le milieu des pixels
-        private readonly double PIXEL_OFFSET = 0.5d;
+        private readonly float PIXEL_OFFSET = 0.5f;
 
         public Sampler(int width, int height)
         {
@@ -49,7 +49,7 @@ namespace hw3
         {
             lock (_lock)
             {
-                _current = PIXEL_OFFSET - 1d;
+                _current = PIXEL_OFFSET - 1f;
             }
         }
 

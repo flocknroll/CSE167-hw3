@@ -8,7 +8,7 @@ namespace hw3
 {
     public class Ray
     {
-        public Ray(RTPoint point, RTVector vector, double tMin, double tMax, bool directional)
+        public Ray(RTPoint point, RTVector vector, float tMin, float tMax, bool directional)
         {
             Point = point;
             Vector = vector;
@@ -19,8 +19,8 @@ namespace hw3
 
         public RTPoint Point { get; }
         public RTVector Vector { get; }
-        public double TMin { get; }
-        public double TMax { get; }
+        public float TMin { get; }
+        public float TMax { get; }
         public bool Directional { get; set; }
     }
 }

@@ -1,13 +1,13 @@
-﻿using MathNet.Numerics.LinearAlgebra;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace hw3
 {
-    public class Transformation: ITransform
+    public class Transformation
     {
         public Transformation()
         {
@@ -26,25 +26,25 @@ namespace hw3
             Transforms.Add(transform);
         }
 
-        public Matrix<double> Compute()
+        protected Matrix4x4 Compute()
         {
-            Matrix<double> matrix = new Identity().Compute();
+            Matrix4x4 matrix = new Identity().Compute();
 
             foreach (ITransform transform in Transforms)
             {
-                matrix *= transform.Compute();
+                matrix = transform.Compute() * matrix;
             }
 
             return matrix;
         }
 
-        public Matrix<double> ComputeInverse()
+        protected Matrix4x4 ComputeInverse()
         {
-            Matrix<double> matrix = new Identity().Compute();
+            Matrix4x4 matrix = new Identity().Compute();
 
             foreach (ITransform transform in Transforms.Reverse())
             {
-                matrix *= transform.ComputeInverse();
+                matrix = transform.ComputeInverse() * matrix;
             }
 
             return matrix;
@@ -54,22 +54,27 @@ namespace hw3
 
         public RTVector ApplyTo(RTVector v)
         {
-            return new RTVector(Compute() * v.Vector);
+            return v.ApplyMatrix(Compute());
         }
 
-        public RTPoint ApplyTo(RTPoint v)
+        public RTPoint ApplyTo(RTPoint p)
         {
-            return new RTPoint(Compute() * v.Vector);
+            return p.ApplyMatrix(Compute());
         }
 
         public RTVector ApplyInverseTo(RTVector v)
         {
-            return new RTVector(ComputeInverse() * v.Vector);
+            return v.ApplyMatrix(ComputeInverse());
         }
 
-        public RTPoint ApplyInverseTo(RTPoint v)
+        public RTPoint ApplyInverseTo(RTPoint p)
         {
-            return new RTPoint(ComputeInverse() * v.Vector);
+            return p.ApplyMatrix(ComputeInverse());
+        }
+
+        public RTVector ApplyInverseTransposeTo(RTVector v)
+        {
+            return v.ApplyMatrix(Matrix4x4.Transpose(ComputeInverse()));
         }
     }
 }

@@ -48,7 +48,7 @@ namespace hw3
         #region Config helpers
         public SceneBuilder InitCameraDefault()
         {
-            _camera = new Camera(RTPoint.Zero, RTPoint.Zero, RTVector.Zero, 90.0d, _sampler?.Width ?? 400, _sampler?.Height ?? 400);
+            _camera = new Camera(RTPoint.Zero, RTPoint.Zero, RTVector.Zero, 90.0f, _sampler?.Width ?? 400, _sampler?.Height ?? 400);
 
             return this;
         }
@@ -61,7 +61,7 @@ namespace hw3
             return this;
         }
 
-        public SceneBuilder SetCamera(RTPoint lookFrom, RTPoint lookAt, RTVector up, double fovy)
+        public SceneBuilder SetCamera(RTPoint lookFrom, RTPoint lookAt, RTVector up, float fovy)
         {
             if (_sampler == null)
                 throw new InvalidOperationException("La taille doit être définie avant la caméra.");

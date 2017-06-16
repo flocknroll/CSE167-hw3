@@ -1,7 +1,7 @@
-﻿using MathNet.Numerics.LinearAlgebra;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,38 +9,40 @@ namespace hw3
 {
     public class RTVector
     {
-        public RTVector(double x, double y, double z)
+        public RTVector(float x, float y, float z)
         {
-            Vector = Vector<double>.Build.Dense(new double[] { x, y, z, 0 });
+            Vector = new Vector4(x, y, z, 0);
         }
 
-        public RTVector(Vector<double> vector)
+        public RTVector(Vector4 vector)
         {
-            Vector = Vector<double>.Build.Dense(new double[] { vector[0], vector[1], vector[2], 0 });
+            Vector = new Vector4(vector.X, vector.Y, vector.Z, 0);
         }
 
         public RTVector(RTVector vector)
         {
-            Vector = Vector<double>.Build.Dense(new double[] { vector.X, vector.Y, vector.Z, 0 });
+            Vector = new Vector4(vector.X, vector.Y, vector.Z, 0);
+        }
+
+        public RTVector(RTPoint p)
+        {
+            Vector = new Vector4(p.X, p.Y, p.Z, 0);
         }
 
         public static RTVector Zero => new RTVector(0, 0, 0);
 
         public RTVector Normalize()
         {
-            return new RTVector(Vector / Length());
+            return new RTVector(Vector4.Normalize(Vector));
         }
 
-        public double Length()
-        {
-            return Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2) + Math.Pow(Z, 2));
-        }
+        public float Length => Vector.Length();
 
-        public Vector<double> Vector { get; protected set; }
+        protected Vector4 Vector { get; set; }
 
-        public double X => Vector[0];
-        public double Y => Vector[1];
-        public double Z => Vector[2];
+        public float X => Vector.X;
+        public float Y => Vector.Y;
+        public float Z => Vector.Z;
 
         public static RTVector CrossProduct(RTVector l, RTVector r)
         {
@@ -49,12 +51,12 @@ namespace hw3
                                 l.X * r.Y - l.Y * r.X);
         }
 
-        public static double DotProduct(RTVector v1, RTVector v2)
+        public static float DotProduct(RTVector v1, RTVector v2)
         {
-            return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
+            return Vector4.Dot(v1.Vector, v2.Vector);
         }
 
-        public static RTVector operator *(double d, RTVector v)
+        public static RTVector operator *(float d, RTVector v)
         {
             return new RTVector(d * v.Vector);
         }
@@ -69,12 +71,12 @@ namespace hw3
             return new RTVector(v1.Vector - v2.Vector);
         }
 
-        public static RTVector operator *(RTVector v, double d)
+        public static RTVector operator *(RTVector v, float d)
         {
             return d * v;
         }
 
-        public static RTVector operator /(RTVector v, double d)
+        public static RTVector operator /(RTVector v, float d)
         {
             return new RTVector(v.Vector / d);
         }
@@ -87,6 +89,11 @@ namespace hw3
         public static RTVector operator -(RTVector v)
         {
             return new RTVector(-v.Vector);
+        }
+
+        public RTVector ApplyMatrix(Matrix4x4 m)
+        {
+            return new RTVector(Vector4.Transform(Vector, m));
         }
     }
 }

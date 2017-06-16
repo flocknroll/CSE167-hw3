@@ -3,29 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MathNet.Numerics.LinearAlgebra;
+using System.Numerics;
 
 namespace hw3
 {
     public class RTPoint
     {
-        public RTPoint(double x, double y, double z)
+        public RTPoint(float x, float y, float z)
         {
-            Vector = Vector<double>.Build.Dense(new double[] { x, y, z, 1 });
+            Vector = new Vector4( x, y, z, 1 );
         }
-        public RTPoint(Vector<double> vector)
+        public RTPoint(Vector4 vector)
         {
-            Vector = vector;
+            Vector = new Vector4(vector.X, vector.Y, vector.Z, vector.W);
+        }
+
+        public RTPoint(RTPoint p)
+        {
+            Vector = new Vector4(p.X, p.Y, p.Z, p.W);
         }
 
         public static RTPoint Zero => new RTPoint(0, 0, 0);
 
-        public Vector<double> Vector { get; }
+        protected Vector4 Vector { get; set; }
 
-        public double X => Vector[0];
-        public double Y => Vector[1];
-        public double Z => Vector[2];
-        public double W => Vector[3];
+        public float Length => Vector.Length();
+
+        public float X => Vector.X;
+        public float Y => Vector.Y;
+        public float Z => Vector.Z;
+        public float W => Vector.W;
 
         public static RTVector operator -(RTPoint p1, RTPoint p2)
         {
@@ -34,7 +41,8 @@ namespace hw3
 
         public static RTPoint operator +(RTPoint p, RTVector v)
         {
-            return new RTPoint(p.Vector + v.Vector);
+            Vector4 temp = new Vector4(v.X, v.Y, v.Z, 0);
+            return new RTPoint(p.Vector + temp);
         }
         public static RTPoint operator +(RTPoint p1, RTPoint p2)
         {
@@ -43,12 +51,18 @@ namespace hw3
 
         public static RTPoint operator -(RTPoint p, RTVector v)
         {
-            return new RTPoint(p.Vector - v.Vector);
+            Vector4 temp = new Vector4(v.X, v.Y, v.Z, 0);
+            return new RTPoint(p.Vector - temp);
         }
 
-        public static RTPoint operator /(RTPoint p, double d)
+        public static RTPoint operator /(RTPoint p, float d)
         {
             return new RTPoint(p.Vector / d);
+        }
+
+        public RTPoint ApplyMatrix(Matrix4x4 m)
+        {
+            return new RTPoint(Vector4.Transform(Vector, m));
         }
     }
 }

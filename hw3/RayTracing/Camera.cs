@@ -1,5 +1,4 @@
-﻿using MathNet.Numerics.LinearAlgebra;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -13,14 +12,14 @@ namespace hw3
     {
         public void MoveCamera(RTPoint lookFrom, RTPoint lookAt, RTVector up)
         {
-            Eye = new RTPoint(lookFrom.Vector);
+            Eye = new RTPoint(lookFrom);
 
             W = (lookFrom - lookAt).Normalize();
             U = RTVector.CrossProduct(up, W).Normalize();
             V = RTVector.CrossProduct(W, U);
         }
 
-        public Camera(RTPoint lookFrom, RTPoint lookAt, RTVector up, double fovy, int width, int height)
+        public Camera(RTPoint lookFrom, RTPoint lookAt, RTVector up, float fovy, int width, int height)
         {
             MoveCamera(lookFrom, lookAt, up);
 
@@ -28,7 +27,7 @@ namespace hw3
             Height = height;
             
             FovY = fovy.ToRadians();
-            FovX = 2.0d * Math.Atan(Math.Tan(FovY / 2.0d) * (width / (double)height));
+            FovX = 2.0f * (float)Math.Atan((float)Math.Tan(FovY / 2.0f) * (width / (float)height));
         }
 
         public RTPoint Eye { get; private set; }
@@ -39,17 +38,17 @@ namespace hw3
         public int Width { get; }
         public int Height { get; }
 
-        public double FovX { get; }
-        public double FovY { get; }
+        public float FovX { get; }
+        public float FovY { get; }
 
         public Ray GenerateRay(RTPoint p)
         {
-            double alpha = Math.Tan(FovX / 2.0d) * ((p.X - (Width / 2.0d)) / (Width / 2.0d));
-            double beta = Math.Tan(FovY / 2.0d) * (((Height / 2.0d) - p.Y) / (Height / 2.0d));
+            float alpha = (float)Math.Tan(FovX / 2.0f) * ((p.X - (Width / 2.0f)) / (Width / 2.0f));
+            float beta = (float)Math.Tan(FovY / 2.0f) * (((Height / 2.0f) - p.Y) / (Height / 2.0f));
 
-            RTVector rayVec = new RTVector(alpha * U.Vector + beta * V.Vector - W.Vector).Normalize();
+            RTVector rayVec = new RTVector(alpha * U + beta * V - W).Normalize();
 
-            return new Ray(Eye, rayVec, 0, double.MaxValue, false);
+            return new Ray(Eye, rayVec, 0, float.MaxValue, false);
         }
     }
 }

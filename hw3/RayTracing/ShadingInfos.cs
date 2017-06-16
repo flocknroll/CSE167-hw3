@@ -14,6 +14,6 @@ namespace hw3
         public RTColor Emission { get; set; } = new RTColor();
         public RTColor Ambient { get; set; } = new RTColor();
 
-        public double Shininess { get; set; } = 0.0d;
+        public float Shininess { get; set; } = 0.0f;
     }
 }

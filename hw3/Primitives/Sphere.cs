@@ -9,7 +9,7 @@ namespace hw3
 {
     public class Sphere : IIntersect
     {
-        public Sphere(RTPoint center, double radius, Transformation transformation)
+        public Sphere(RTPoint center, float radius, Transformation transformation)
         {
             Center = center;
             Radius = radius;
@@ -17,34 +17,34 @@ namespace hw3
         }
 
         public RTPoint Center { get; }
-        public double Radius { get; }
+        public float Radius { get; }
         public Transformation Transformation { get; }
 
 
-        public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo, out double t)
+        public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo, out float t)
         {
             RTPoint tPoint = Transformation.ApplyInverseTo(new RTPoint(ray.Point.X, ray.Point.Y, ray.Point.Z));
             RTVector tVec = Transformation.ApplyInverseTo(new RTVector(ray.Vector.X, ray.Vector.Y, ray.Vector.Z));
 
             RTVector ec = tPoint - Center;
 
-            double a = RTVector.DotProduct(tVec, tVec);
-            double b = 2.0d * RTVector.DotProduct(tVec, ec);
-            double c = RTVector.DotProduct(ec, ec) - Math.Pow(Radius, 2);
+            float a = RTVector.DotProduct(tVec, tVec);
+            float b = 2.0f * RTVector.DotProduct(tVec, ec);
+            float c = RTVector.DotProduct(ec, ec) - (float)Math.Pow(Radius, 2);
 
-            double det = Math.Pow(b, 2) - 4.0d * a * c;
-            t = double.MaxValue;
+            float det = (float)Math.Pow(b, 2) - 4.0f * a * c;
+            t = float.MaxValue;
 
             bool intersect = false;
             if (det == 0d)
             {
                 intersect = true;
-                t = -b / (2.0d * a);
+                t = -b / (2.0f * a);
             }
             else if (det > 0d)
             {
-                double t1 = (-b + Math.Sqrt(det)) / (2.0d * a);
-                double t2 = (-b - Math.Sqrt(det)) / (2.0d * a);
+                float t1 = (-b + (float)Math.Sqrt(det)) / (2.0f * a);
+                float t2 = (-b - (float)Math.Sqrt(det)) / (2.0f * a);
 
                 if ((t1 > 0 && t2 < 0) || (t1 < 0 && t2 > 0))
                 {
@@ -73,7 +73,8 @@ namespace hw3
                     geo.Normal = new Normal(geo.Point - Center);
 
                     geo.Point = Transformation.ApplyTo(geo.Point);
-                    geo.Normal = new Normal(Transformation.ComputeInverse().Transpose() * geo.Normal.Vector);
+
+                    geo.Normal = new Normal(Transformation.ApplyInverseTransposeTo(geo.Normal));
                 }
 
                 return true;

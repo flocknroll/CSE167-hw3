@@ -10,20 +10,20 @@ namespace hw3
     {
         public Attenuation()
         {
-            Constant = 1.0d;
-            Linear = 0.0d;
-            Quadratic = 0.0d;
+            Constant = 1.0f;
+            Linear = 0.0f;
+            Quadratic = 0.0f;
         }
 
-        public Attenuation(double constant, double linear, double quadratic)
+        public Attenuation(float constant, float linear, float quadratic)
         {
             Constant = constant;
             Linear = linear;
             Quadratic = quadratic;
         }
 
-        public double Constant { get; set; }
-        public double Linear { get; set; }
-        public double Quadratic { get; set; }
+        public float Constant { get; set; }
+        public float Linear { get; set; }
+        public float Quadratic { get; set; }
     }
 }

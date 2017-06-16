@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using MathNet.Numerics.LinearAlgebra;
 
 namespace hw3
 {
@@ -16,26 +16,14 @@ namespace hw3
 
         public RTVector Vector { get; set; }
 
-        public Matrix<double> Compute()
+        public Matrix4x4 Compute()
         {
-            Matrix<double> mat = Matrix<double>.Build.DenseIdentity(4);
-
-            mat[0, 3] = Vector.X;
-            mat[1, 3] = Vector.Y;
-            mat[2, 3] = Vector.Z;
-
-            return mat;
+            return Matrix4x4.CreateTranslation(Vector.X, Vector.Y, Vector.Z);
         }
 
-        public Matrix<double> ComputeInverse()
+        public Matrix4x4 ComputeInverse()
         {
-            Matrix<double> mat = Matrix<double>.Build.DenseIdentity(4);
-
-            mat[0, 3] = -Vector.X;
-            mat[1, 3] = -Vector.Y;
-            mat[2, 3] = -Vector.Z;
-
-            return mat;
+            return Matrix4x4.CreateTranslation(-Vector.X, -Vector.Y, -Vector.Z);
         }
     }
 }
