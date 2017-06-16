@@ -15,6 +15,11 @@ namespace hw3
             TMin = tMin;
             TMax = tMax;
             Directional = directional;
+
+            InvDir = 1f / Vector;
+            Signs = new int[] { InvDir.X < 0 ? 1 : 0,
+                                InvDir.Y < 0 ? 1 : 0,
+                                InvDir.Z < 0 ? 1 : 0 };
         }
 
         public RTPoint Point { get; }
@@ -22,5 +27,7 @@ namespace hw3
         public float TMin { get; }
         public float TMax { get; }
         public bool Directional { get; set; }
+        public RTVector InvDir { get; }
+        public int[] Signs { get; }
     }
 }

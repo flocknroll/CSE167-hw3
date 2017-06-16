@@ -14,12 +14,17 @@ namespace hw3
             Center = center;
             Radius = radius;
             Transformation = transformation;
+
+            _boundingBox = new BoundingBox(Transformation.ApplyTo(new RTPoint(Center.X - Radius, Center.Y - Radius, Center.Z - Radius)),
+                                            Transformation.ApplyTo(new RTPoint(Center.X + Radius, Center.Y + Radius, Center.Z + Radius)));
         }
 
         public RTPoint Center { get; }
         public float Radius { get; }
         public Transformation Transformation { get; }
+        private BoundingBox _boundingBox;
 
+        public BoundingBox GetBoundingBox() => _boundingBox;
 
         public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo, out float t)
         {

@@ -11,6 +11,14 @@ namespace hw3
         public Triangle(List<Vertex> vertices, Transformation transformation)
         {
             Vertices = new List<Vertex>();
+
+            float minX = float.MaxValue;
+            float minY = float.MaxValue;
+            float minZ = float.MaxValue;
+            float maxX = float.MinValue;
+            float maxY = float.MinValue;
+            float maxZ = float.MaxValue;
+
             foreach (Vertex v in vertices)
             {
                 RTPoint point = transformation.ApplyTo(v.Location);
@@ -22,13 +30,30 @@ namespace hw3
                     normal = new Normal(transformation.ApplyTo(v.Normal));
 
                 Vertices.Add(new Vertex(point, normal));
+
+                if (point.X < minX)
+                    minX = point.X;
+                if (point.Y < minY)
+                    minX = point.Y;
+                if (point.Z < minZ)
+                    minX = point.Z;
+                if (point.X > maxX)
+                    maxX = point.X;
+                if (point.Y > maxY)
+                    maxX = point.Y;
+                if (point.Z > maxZ)
+                    maxX = point.Z;
             }
 
             Normal = ComputeNormal();
+            _boundingBox = new BoundingBox(minX, maxX, minY, maxY, minZ, maxZ);
         }
 
         public List<Vertex> Vertices { get; }
         public Normal Normal { get; private set; }
+
+        private BoundingBox _boundingBox;
+        public BoundingBox GetBoundingBox() => _boundingBox;
 
         public bool Intersect(Ray ray, bool computeGeo, out LocalGeo geo, out float pos)
         {

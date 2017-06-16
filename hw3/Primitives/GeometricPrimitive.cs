@@ -16,6 +16,11 @@ namespace hw3
         public IIntersect Shape { get; }
         public IShading Material { get; }
 
+        public BoundingBox GetBoundingBox()
+        {
+            return Shape.GetBoundingBox();
+        }
+
         public ShadingInfos GetShading(LocalGeo geo)
         {
             return Material.GetShading(geo);

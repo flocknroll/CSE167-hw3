@@ -43,6 +43,47 @@ namespace hw3
             float lastT = float.MaxValue;
             float currT;
             bool shadow;
+
+            List<IPrimitive> boxFound = new List<IPrimitive>();
+
+            //foreach (IPrimitive p in Primitives)
+            //{
+            //    // TODO : test boxes
+            //    BoundingBox bounds = p.GetBoundingBox();
+            //    bool intersect;
+
+            //    float tmin, tmax, tymin, tymax, tzmin, tzmax;
+
+            //    tmin = (bounds[ray.Signs[0]].X - ray.Point.X) * ray.InvDir.X;
+            //    tmax = (bounds[1 - ray.Signs[0]].X - ray.Point.X) * ray.InvDir.X;
+            //    tymin = (bounds[ray.Signs[1]].Y - ray.Point.Y) * ray.InvDir.Y;
+            //    tymax = (bounds[1 - ray.Signs[1]].Y - ray.Point.Y) * ray.InvDir.Y;
+
+            //    if ((tmin > tymax) || (tymin > tmax))
+            //        intersect = false;
+
+            //    if (tymin > tmin)
+            //        tmin = tymin;
+            //    if (tymax < tmax)
+            //        tmax = tymax;
+
+            //    tzmin = (bounds[ray.Signs[2]].Z - ray.Point.Z) * ray.InvDir.Z;
+            //    tzmax = (bounds[1 - ray.Signs[2]].Z - ray.Point.Z) * ray.InvDir.Z;
+
+            //    if ((tmin > tzmax) || (tzmin > tmax))
+            //        intersect = false;
+
+            //    if (tzmin > tmin)
+            //        tmin = tzmin;
+            //    if (tzmax < tmax)
+            //        tmax = tzmax;
+
+            //    intersect = true;
+
+            //    if (intersect)
+            //        boxFound.Add(p);
+            //}
+
             foreach (IPrimitive prim in Primitives)
             {
                 LocalGeo geo;
