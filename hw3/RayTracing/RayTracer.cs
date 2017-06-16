@@ -23,14 +23,14 @@ namespace hw3
 
         private RTColor Shading(LocalGeo geo, ShadingInfos si, Ray camRay, Ray lightRay, RTColor lightCol)
         {
-            float nDotL = RTVector.DotProduct(geo.Normal, lightRay.Vector.Normalize());
+            float nDotL = RTVector.DotProduct(geo.Normal, lightRay.Vector);
             RTColor lambert = lightCol * si.Diffuse * (nDotL > 0 ? nDotL : 0.0f);
 
-            RTVector half = (lightRay.Vector.Normalize() - camRay.Vector.Normalize()).Normalize();
+            RTVector half = (lightRay.Vector - camRay.Vector.Normalize()).Normalize();
             float nDotH = RTVector.DotProduct(geo.Normal, half);
             RTColor phong = lightCol * si.Specular * (float)Math.Pow((nDotH > 0 ? nDotH : 0.0f), si.Shininess);
 
-            float r = lightRay.Directional ? 0 : (geo.Point + lightRay.Vector).Length;
+            float r = lightRay.Directional ? 0 : lightRay.TMax; // Dans le cas d'un point, le t max est la distance entre le point et la source
             RTColor res = (lambert + phong) / (Attenuation.Constant + Attenuation.Linear * r + Attenuation.Quadratic * (float)Math.Pow(r, 2));
 
             return res;
