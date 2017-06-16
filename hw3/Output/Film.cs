@@ -45,7 +45,7 @@ namespace hw3
             Interlocked.Increment(ref _commited);
 
             long time = _sw.ElapsedMilliseconds;
-            if (time - _lastCommit > 1000L)
+            if (time - _lastCommit > 500L)
             {
                 long total = Width * Height;
                 _lastCommit = time;
@@ -55,7 +55,7 @@ namespace hw3
                 TimeSpan remaining = TimeSpan.FromSeconds((total - _commited) / pps);
 
                 Console.SetCursorPosition(0, 0);
-                Console.Write($"\rElapsed : {elapsed.TotalHours:0}:{elapsed.Minutes:00}:{elapsed.Seconds:00} - {_commited}/{total} - {pps:0.##} pixel/s - Est. remaining : {remaining.TotalHours:0}:{remaining.Minutes:00}:{remaining.Seconds:00} <>");
+                Console.Write($"\rElapsed : {elapsed.TotalHours:0}:{elapsed.Minutes:00}:{elapsed.Seconds:00} - {_commited}/{total} - {pps:0.00} pixel/s - Est. remaining : {remaining.TotalHours:0}:{remaining.Minutes:00}:{remaining.Seconds:00} <>");
                 
             }
         }

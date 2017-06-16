@@ -21,8 +21,9 @@ namespace hw3
         public Ray GenerateRay(LocalGeo geo, out RTColor color)
         {
             color = Color;
+            RTVector ray = Source - geo.Point;
 
-            return new Ray(geo.Point, (Source - geo.Point).Normalize(), 1e-3f, float.MaxValue, false);
+            return new Ray(geo.Point, ray.Normalize(), 1e-3f, ray.Length, false);
         }
     }
 }
