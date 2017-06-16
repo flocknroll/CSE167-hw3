@@ -28,7 +28,7 @@ namespace hw3
 
         protected Matrix4x4 Compute()
         {
-            Matrix4x4 matrix = new Identity().Compute();
+            Matrix4x4 matrix = Matrix4x4.Identity;
 
             foreach (ITransform transform in Transforms)
             {
@@ -40,16 +40,19 @@ namespace hw3
 
         protected Matrix4x4 ComputeInverse()
         {
-            Matrix4x4 matrix = new Identity().Compute();
+            Matrix4x4 matrix;
 
-            foreach (ITransform transform in Transforms.Reverse())
+            if (!Matrix4x4.Invert(Compute(), out matrix))
             {
-                matrix = transform.ComputeInverse() * matrix;
+                matrix = Matrix4x4.Identity;
+
+                foreach (ITransform transform in Transforms.Reverse())
+                {
+                    matrix = transform.ComputeInverse() * matrix;
+                }
             }
 
             return matrix;
-
-            //return Compute().Inverse();
         }
 
         public RTVector ApplyTo(RTVector v)

@@ -22,6 +22,7 @@ namespace hw3
         {
             RTVector axis = axisIn.Normalize();
             Matrix4x4 part1 = Matrix4x4.Multiply(Matrix4x4.Identity, (float)Math.Cos(radians));
+            part1.M44 = 1;
 
             Matrix4x4 part2 = Matrix4x4.Multiply(new Matrix4x4((float)Math.Pow(axis.X, 2), axis.X * axis.Y, axis.X * axis.Z, 0,
                                               axis.X * axis.Y, (float)Math.Pow(axis.Y, 2), axis.Y * axis.Z, 0,
@@ -35,7 +36,7 @@ namespace hw3
                                             0, 0, 0, 1),
                                     (float)Math.Sin(radians));
 
-            // TODO : utiliser Matrix4x4.CreateRotation
+            // TODO : utiliser Matrix4x4.CreateRotation ?
             return part1 + part2 + part3;
         }
 
