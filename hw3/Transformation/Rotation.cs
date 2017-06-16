@@ -37,7 +37,7 @@ namespace hw3
                                     (float)Math.Sin(radians));
 
             // TODO : utiliser Matrix4x4.CreateRotation ?
-            return part1 + part2 + part3;
+            return part1 + Matrix4x4.Transpose(part2) + Matrix4x4.Transpose(part3);
         }
 
         public Matrix4x4 Compute()
