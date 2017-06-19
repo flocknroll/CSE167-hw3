@@ -29,7 +29,7 @@ namespace hw3
         public RTPoint Current {
             get
             {
-                return new RTPoint(_current % Width, _current / Width, 0);
+                return new RTPoint(_current % Width, (float)Math.Floor(_current / Width) + PIXEL_OFFSET, 0);
             }
         }
 
