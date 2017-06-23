@@ -13,5 +13,21 @@ namespace hw3
         {
             return deg * (float)Math.PI / 180.0f;
         }
+
+        public static float Min(float f1, float f2)
+        {
+            if (f1 < f2)
+                return f1;
+
+            return f2;
+        }
+
+        public static float Max(float f1, float f2)
+        {
+            if (f1 > f2)
+                return f1;
+
+            return f2;
+        }
     }
 }

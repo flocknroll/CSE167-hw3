@@ -36,6 +36,8 @@ namespace hw3
             return res;
         }
 
+        private BBTree _tree = null;
+
         public RTColor Trace(Ray ray, int depth)
         {
             RTColor res = new RTColor();
@@ -46,45 +48,16 @@ namespace hw3
 
             List<IPrimitive> boxFound = new List<IPrimitive>();
 
-            //foreach (IPrimitive p in Primitives)
-            //{
-            //    // TODO : test boxes
-            //    BoundingBox bounds = p.GetBoundingBox();
-            //    bool intersect;
+            // TODO : initialiser l'arbre autrepart
+            if (_tree == null)
+                _tree = new BBTree(Primitives);
 
-            //    float tmin, tmax, tymin, tymax, tzmin, tzmax;
+            BBNode hitNode;
 
-            //    tmin = (bounds[ray.Signs[0]].X - ray.Point.X) * ray.InvDir.X;
-            //    tmax = (bounds[1 - ray.Signs[0]].X - ray.Point.X) * ray.InvDir.X;
-            //    tymin = (bounds[ray.Signs[1]].Y - ray.Point.Y) * ray.InvDir.Y;
-            //    tymax = (bounds[1 - ray.Signs[1]].Y - ray.Point.Y) * ray.InvDir.Y;
+            if (_tree.Hit(ray, out hitNode))
+                boxFound.Add(hitNode.Primitive);
 
-            //    if ((tmin > tymax) || (tymin > tmax))
-            //        intersect = false;
-
-            //    if (tymin > tmin)
-            //        tmin = tymin;
-            //    if (tymax < tmax)
-            //        tmax = tymax;
-
-            //    tzmin = (bounds[ray.Signs[2]].Z - ray.Point.Z) * ray.InvDir.Z;
-            //    tzmax = (bounds[1 - ray.Signs[2]].Z - ray.Point.Z) * ray.InvDir.Z;
-
-            //    if ((tmin > tzmax) || (tzmin > tmax))
-            //        intersect = false;
-
-            //    if (tzmin > tmin)
-            //        tmin = tzmin;
-            //    if (tzmax < tmax)
-            //        tmax = tzmax;
-
-            //    intersect = true;
-
-            //    if (intersect)
-            //        boxFound.Add(p);
-            //}
-
-            foreach (IPrimitive prim in Primitives)
+            foreach (IPrimitive prim in boxFound)
             {
                 LocalGeo geo;
                 if (prim.Intersect(ray, true, out geo, out currT))
