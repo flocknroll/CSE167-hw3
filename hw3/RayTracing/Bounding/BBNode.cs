@@ -26,19 +26,30 @@ namespace hw3
 
         public void AddPrimitives(IList<IPrimitive> list, int depth)
         {
-            int k = 3; // 3 dimensions
 
-            int axis = depth % k;
-            int median = list.Count / 2;
-
-            IList<IPrimitive> axisSorted = list.OrderBy(p => p.GetBoundingBox().Middle(axis)).ToList();
-
-            Box = BoundingBox.MergeAll(list);
-            Primitive = axisSorted[median];
-
-            if (median != 0)
+            if (list.Count == 1)
             {
-                IList<IPrimitive> left = list.Take(median - 1).ToList();
+                Left = new BBNode(list[0]);
+                Box = list[0].GetBoundingBox();
+            }
+            else if (list.Count == 2)
+            {
+                Left = new BBNode(list[0]);
+                Right = new BBNode(list[1]);
+                Box = BoundingBox.Merge(list[0].GetBoundingBox(), list[1].GetBoundingBox());
+            }
+            else
+            {
+                int k = 3; // 3 dimensions
+
+                int axis = depth % k;
+                int median = list.Count / 2;
+
+                IList<IPrimitive> axisSorted = list.OrderBy(p => p.GetBoundingBox().Middle(axis)).ToList();
+
+                Box = BoundingBox.MergeAll(list);
+
+                IList<IPrimitive> left = list.Take(median).ToList();
                 IList<IPrimitive> right = list.Skip(median).ToList();
 
                 if (left.Any())
@@ -56,7 +67,8 @@ namespace hw3
 
         public void Hit(Ray ray, ref IList<HitResult> list)
         {
-            if (Box.Hit(ray))
+
+            if (Primitive != null)
             {
                 LocalGeo geo;
                 float t;
@@ -64,7 +76,9 @@ namespace hw3
                 {
                     list.Add(new HitResult { Primitive = Primitive, Geo = geo, T = t });
                 }
-
+            }
+            else if (Box.Hit(ray))
+            {
                 Left?.Hit(ray, ref list);
                 Right?.Hit(ray, ref list);
             }

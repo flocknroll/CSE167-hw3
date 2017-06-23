@@ -45,11 +45,21 @@ namespace hw3
             float lastT = float.MaxValue;
             bool shadow;
 
-            // TODO : initialiser l'arbre autrepart
+            // TODO: initialiser l'arbre autrepart
+            // TODO: corriger la bounding box des spheres
             if (_tree == null)
                 _tree = new BBTree(Primitives);
-
             IEnumerable<HitResult> hits = _tree.Hit(ray);
+
+            //IList<HitResult> hits = Primitives.Select(p =>
+            //{
+            //    if (p.Intersect(ray, true, out LocalGeo geo, out float t))
+            //    {
+            //        return new HitResult { Primitive = p, Geo = geo, T = t };
+            //    }
+
+            //    return null;
+            //}).Where(h => h != null).ToList();
 
             foreach (HitResult h in hits)
             {

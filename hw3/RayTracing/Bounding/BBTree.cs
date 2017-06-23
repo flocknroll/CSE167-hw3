@@ -27,7 +27,6 @@ namespace hw3
 
         private static BBNode Compute(IList<IPrimitive> primitiveList)
         {
-            // TODO : trier primitives
             BBNode root = new BBNode();
 
             root.AddPrimitives(primitiveList, 0);
