@@ -38,7 +38,7 @@ namespace hw3
                 _film.Commit(_sampler.Current, color);
             }
 #else
-            Parallel.ForEach<RTPoint>(_sampler, (point, state, i) =>
+            Parallel.ForEach<RTPoint>(_sampler, new ParallelOptions { MaxDegreeOfParallelism = 8 }, (point, state, i) =>
             {
                 Ray ray = _camera.GenerateRay(point);
                 Color color = _rayTracer.Trace(ray, 0).ToColor();
