@@ -57,6 +57,16 @@ namespace hw3
             return new BoundingBox(xMin, xMax, yMin, yMax, zMin, zMax);
         }
 
+        public static BoundingBox MergeAll(IList<IPrimitive> list)
+        {
+            BoundingBox box = new BoundingBox();
+
+            foreach (IIntersect i in list)
+                box = Merge(box, i.GetBoundingBox());
+
+            return box;
+        }
+
         public bool Hit(Ray ray)
         {
             float tmin, tmax, tymin, tymax, tzmin, tzmax;
@@ -87,5 +97,30 @@ namespace hw3
 
             return true;
         }
+
+        public float MiddleX => (Max.X - Min.X) / 2f;
+        public float MiddleY => (Max.Y - Min.Y) / 2f;
+        public float MiddleZ => (Max.Z - Min.Z) / 2f;
+
+        public float Middle(int axis)
+        {
+            switch (axis)
+            {
+                case 0:
+                    return MiddleX;
+
+                case 1:
+                    return MiddleY;
+
+                case 3:
+                
+                    return MiddleZ;
+
+                default:
+                    return 0f;
+            }
+        }
+
+        public float Length => (Max - Min).Length;
     }
 }

@@ -43,59 +43,49 @@ namespace hw3
             RTColor res = new RTColor();
 
             float lastT = float.MaxValue;
-            float currT;
             bool shadow;
-
-            List<IPrimitive> boxFound = new List<IPrimitive>();
 
             // TODO : initialiser l'arbre autrepart
             if (_tree == null)
                 _tree = new BBTree(Primitives);
 
-            BBNode hitNode;
+            IEnumerable<HitResult> hits = _tree.Hit(ray);
 
-            if (_tree.Hit(ray, out hitNode))
-                boxFound.Add(hitNode.Primitive);
-
-            foreach (IPrimitive prim in boxFound)
+            foreach (HitResult h in hits)
             {
-                LocalGeo geo;
-                if (prim.Intersect(ray, true, out geo, out currT))
+                if (h.T < lastT)
                 {
-                    if (currT < lastT)
+                    lastT = h.T;
+
+                    ShadingInfos si = h.Primitive.GetShading(h.Geo);
+
+                    // Ambient & emission
+                    res = si.Emission + si.Ambient;
+
+                    // Phong shading
+                    foreach (ILight light in Lights)
                     {
-                        lastT = currT;
+                        shadow = false;
+                        RTColor lightCol;
+                        Ray lightRay = light.GenerateRay(h.Geo, out lightCol);
 
-                        ShadingInfos si = prim.GetShading(geo);
-
-                        // Ambient & emission
-                        res = si.Emission + si.Ambient;
-
-                        // Phong shading
-                        foreach (ILight light in Lights)
+                        foreach (IPrimitive pShadow in Primitives)
                         {
-                            shadow = false;
-                            RTColor lightCol;
-                            Ray lightRay = light.GenerateRay(geo, out lightCol);
-
-                            foreach (IPrimitive pShadow in Primitives)
-                            {
-                                if (pShadow.Intersect(lightRay, false, out _, out _))
-                                    shadow = true;
-                            }
-
-                            if (!shadow)
-                                res += Shading(geo, si, ray, lightRay, lightCol);
+                            if (pShadow.Intersect(lightRay, false, out _, out _))
+                                shadow = true;
                         }
 
-                        // Reflection
-                        if ((si.Specular.Red > 0 || si.Specular.Green > 0 || si.Specular.Blue > 0) && depth < MaxDepth)
-                        {
-                            Ray reflected = new Ray(geo.Point, ray.Vector - 2.0f * RTVector.DotProduct(ray.Vector, geo.Normal) * geo.Normal, 1e-3f, float.MaxValue, false);
-                            res += si.Specular * Trace(reflected, depth + 1);
-                        }
-
+                        if (!shadow)
+                            res += Shading(h.Geo, si, ray, lightRay, lightCol);
                     }
+
+                    // Reflection
+                    if ((si.Specular.Red > 0 || si.Specular.Green > 0 || si.Specular.Blue > 0) && depth < MaxDepth)
+                    {
+                        Ray reflected = new Ray(h.Geo.Point, ray.Vector - 2.0f * RTVector.DotProduct(ray.Vector, h.Geo.Normal) * h.Geo.Normal, 1e-3f, float.MaxValue, false);
+                        res += si.Specular * Trace(reflected, depth + 1);
+                    }
+
                 }
             }
 

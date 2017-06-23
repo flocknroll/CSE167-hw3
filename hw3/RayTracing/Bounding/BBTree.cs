@@ -28,19 +28,20 @@ namespace hw3
         private static BBNode Compute(IList<IPrimitive> primitiveList)
         {
             // TODO : trier primitives
-            BBNode root = new BBNode(new BoundingBox());
+            BBNode root = new BBNode();
 
-            foreach (IPrimitive p in primitiveList)
-            {
-                root.AddPrimitive(p);
-            }
+            root.AddPrimitives(primitiveList, 0);
 
             return root;
         }
 
-        public bool Hit(Ray ray, out BBNode hitNode)
+        public IList<HitResult> Hit(Ray ray)
         {
-            return _root.Hit(ray, out hitNode);
+            IList<HitResult> hit = new List<HitResult>();
+
+            _root.Hit(ray, ref hit);
+
+            return hit;
         }
     }
 }

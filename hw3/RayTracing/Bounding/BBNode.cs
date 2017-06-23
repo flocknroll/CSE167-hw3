@@ -14,10 +14,8 @@ namespace hw3
             Primitive = primitive;
         }
 
-        public BBNode(BoundingBox box)
+        public BBNode()
         {
-            Box = box;
-            Primitive = null;
         }
 
         public BoundingBox Box { get; private set; }
@@ -26,80 +24,50 @@ namespace hw3
         public BBNode Left { get; set; }
         public BBNode Right { get; set; }
 
-        public void AddPrimitive(IPrimitive p)
+        public void AddPrimitives(IList<IPrimitive> list, int depth)
         {
-            BoundingBox pBox = p.GetBoundingBox();
+            int k = 3; // 3 dimensions
 
-            if (Primitive != null)
+            int axis = depth % k;
+            int median = list.Count / 2;
+
+            IList<IPrimitive> axisSorted = list.OrderBy(p => p.GetBoundingBox().Middle(axis)).ToList();
+
+            Box = BoundingBox.MergeAll(list);
+            Primitive = axisSorted[median];
+
+            if (median != 0)
             {
-                // TODO : trouver un tri correct
-                if (pBox.Min.X < Box.Min.X)
+                IList<IPrimitive> left = list.Take(median - 1).ToList();
+                IList<IPrimitive> right = list.Skip(median).ToList();
+
+                if (left.Any())
                 {
-                    Left = new BBNode(p);
-                    Right = new BBNode(Primitive);
-                    
+                    Left = new BBNode();
+                    Left.AddPrimitives(left, depth + 1);
                 }
-                else
+                if (right.Any())
                 {
-                    Left = new BBNode(Primitive);
-                    Right = new BBNode(p);
-                }
-                Box = BoundingBox.Merge(pBox, Box);
-                Primitive = null;
-            }
-            else
-            {
-                if (Left == null && Right == null)
-                {
-                    Primitive = p;
-                    Box = pBox;
-                }
-                else
-                {
-                    // TODO : trouver un tri correct
-                    if (pBox.Min.X < Box.Min.X)
-                    {
-                        Left.AddPrimitive(p);
-                    }
-                    else
-                    {
-                        Right.AddPrimitive(p);
-                    }
-                    Box = BoundingBox.Merge(pBox, Box);
+                    Right = new BBNode();
+                    Right.AddPrimitives(right, depth + 1);
                 }
             }
         }
 
-        public bool Hit(Ray ray, out BBNode hitNode)
+        public void Hit(Ray ray, ref IList<HitResult> list)
         {
-            bool hit = false;
-            hitNode = null;
-
-            if (!Box.Hit(ray))
-                return hit;
-            
-            if (Left == null && Right == null)
+            if (Box.Hit(ray))
             {
-                if (Box.Hit(ray))
+                LocalGeo geo;
+                float t;
+                if (Primitive.Intersect(ray, true, out geo, out t))
                 {
-                    hit = true;
-                    hitNode = this;
-                }
-            }
-            else
-            {
-                if (Left != null && Left.Hit(ray, out hitNode))
-                {
-                    hit = true;
+                    list.Add(new HitResult { Primitive = Primitive, Geo = geo, T = t });
                 }
 
-                if (!hit && Right != null && Left.Hit(ray, out hitNode))
-                {
-                    hit = true;
-                }
+                Left?.Hit(ray, ref list);
+                Right?.Hit(ray, ref list);
             }
-
-            return hit;
         }
     }
 }

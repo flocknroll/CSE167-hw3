@@ -17,7 +17,7 @@ namespace hw3
             float minZ = float.MaxValue;
             float maxX = float.MinValue;
             float maxY = float.MinValue;
-            float maxZ = float.MaxValue;
+            float maxZ = float.MinValue;
 
             foreach (Vertex v in vertices)
             {
@@ -34,15 +34,15 @@ namespace hw3
                 if (point.X < minX)
                     minX = point.X;
                 if (point.Y < minY)
-                    minX = point.Y;
+                    minY = point.Y;
                 if (point.Z < minZ)
-                    minX = point.Z;
+                    minZ = point.Z;
                 if (point.X > maxX)
                     maxX = point.X;
                 if (point.Y > maxY)
-                    maxX = point.Y;
+                    maxY = point.Y;
                 if (point.Z > maxZ)
-                    maxX = point.Z;
+                    maxZ = point.Z;
             }
 
             Normal = ComputeNormal();

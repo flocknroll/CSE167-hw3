@@ -55,6 +55,7 @@
     <Compile Include="RayTracing\Bounding\BBNode.cs" />
     <Compile Include="RayTracing\Bounding\BBTree.cs" />
     <Compile Include="RayTracing\Bounding\BoundingBox.cs" />
+    <Compile Include="RayTracing\HitResult.cs" />
     <Compile Include="RayTracing\RTColor.cs" />
     <Compile Include="Output\Film.cs" />
     <Compile Include="Primitives\GeometricPrimitive.cs" />
